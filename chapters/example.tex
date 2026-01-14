@@ -25,7 +25,7 @@ A set $C \subset \R^d$ is \textbf{convex} if for any two points $\xx, \yy \in C$
     A function $f$ as above is said to be \textbf{convex} if $\dom(f)$ is convex and for all $\xx, \yy \in \dom(f)$ and $\lambda \in [0, 1]$ we have: $f(\lambda \xx + (1 - \lambda)\yy) \leq \lambda f(\xx) + (1 - \lambda) f(\yy)$.   
 \end{framed}
 While the graph of $f$ is the set $\{(\xx, f (\xx)) \in \R^{d+1} : \xx \in \dom(f)\}$, the \textbf{epigraph} is the set of points above the graph, $\textbf{epi}(f) := \{(\xx, \alpha) \in \R^{d+1} : \xx \in \dom(f), \alpha \geq f(\xx)\}$. $f$ is a convex function if and only if $\textbf{epi}(f)$ is a convex set. \\
-\textbf{Jensen's inequality} Let $f : \R^d \rightarrow \R$ be a convex function, $\xx_1, \dots, \xx_n \in \dom(f)$ and $\lambda_1, \dots, \lambda_m \in \R_{+}$ such that $\sum_{i=1}^n{\lambda_i}=1$, then: $f\left(\sum_{i=1}^m{\lambda_i x\xx_i} \right) \leq \sum_{i=1}^n{\lambda_i f(\xx_i)}$. \\
+\textbf{Jensen's inequality} Let $f : \R^d \rightarrow \R$ be a convex function, $\xx_1, \dots, \xx_n \in \dom(f)$ and $\lambda_1, \dots, \lambda_m \in \R_{+}$ such that $\sum_{i=1}^n{\lambda_i}=1$, then: $f(\sum_{i=1}^m{\lambda_i x\xx_i}) \leq \sum_{i=1}^n{\lambda_i f(\xx_i)}$. \\
 If $f$ is convex and $\dom(f)$ is open then $f$ is continuous.\\
 \begin{framed}
     \textbf{First-order characterization of convexity} Let $\dom(f)$ be open and $f$ differentiable then $f$ is convex if and only if $\dom(f)$ is convex and $f(\yy) \geq f(\xx) + \nabla f(\xx)^T (\yy - \xx)$. Geometrically, this means that for all $\xx \in \dom(f)$, the graph of $f$ lies above its tangent hyperplane at the point $(\xx, f(\xx))$.

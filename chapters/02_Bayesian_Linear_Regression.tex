@@ -5,7 +5,7 @@
     $\vwhat_{\ridge} = \inv{(\transpose{\mX} \mX + \lambda \mI)} \transpose{\mX} \vy$
 \end{framed}
 \textbf{Notable Results}: $\Var{\vwhat_{\ls} \mid \rX} = \sigman^2(\transpose{\rX}\rX)^{-1}$ \\
-A \textbf{Gaussian prior on the weights} $\vw \sim \N{\vzero}{\sigmap^2 \mI}$, yields the posterior distribution: $\log p(\vw \mid \vx_{1:n}, y_{1:n}) = -\frac{1}{2} \brackets*{\transpose{\vw}\mSigma^{-1}\vw - 2\vmu} + \const$, with $\mSigma \defeq \inv{\parentheses*{\sigman^{-2} \transpose{\mX} \mX + \sigmap^{-2} \mI}}$ and $\vmu \defeq \sigman^{-2} \mSigma \transpose{\mX} \vy$. We have $\vw \mid \vx_{1:n}, y_{1:n} \sim \N{\vmu}{\mSigma}$: \textit{Gaussian's with known variance and linear likelihood} are self-conjugate. \\
+A \textbf{Gaussian prior on the weights} $\vw \sim \N{\vzero}{\sigmap^2 \mI}$, yields the posterior distribution: $\log p(\vw \mid \vx_{1:n}, y_{1:n}) = -\frac{1}{2} \brackets{\transpose{\vw}\mSigma^{-1}\vw - 2\vmu} + \const$, with $\mSigma \defeq \inv{\parentheses*{\sigman^{-2} \transpose{\mX} \mX + \sigmap^{-2} \mI}}$ and $\vmu \defeq \sigman^{-2} \mSigma \transpose{\mX} \vy$. We have $\vw \mid \vx_{1:n}, y_{1:n} \sim \N{\vmu}{\mSigma}$: \textit{Gaussian's with known variance and linear likelihood} are self-conjugate. \\
 MAP: $\vwhat_\MAP = \argmin_\vw \norm{\vy - \mX \vw}_2^2 + \frac{\sigman^2}{\sigmap^2} \norm{\vw}_2^2$, \textit{identical to ridge regression} with $\lambda \defeq \sigman^2 / \sigmap^2$. \\
 A \textbf{Laplace prior} on the weights is equivalent to \textbf{lasso regression} with decay ${\lambda \defeq \sigman^2 / \ell}$. \\
 \textbf{Bayesian inference}: Distribution for a test point $\vxs$ is: $\ys \mid \vxs, \vx_{1:n}, y_{1:n} \sim \N{\transpose{\vmu} \vxs}{\transpose{\vxs} \mSigma \vxs + \sigman^2}$. \\
@@ -16,7 +16,7 @@ Applying linear regression to non linear functions: apply a non linear transform
     \textbf{Linear Kernel}: $k(\vx, \vxp) = l \transpose{\vx} \vxp$ \\
     \textbf{RBF/Gaussian}: $k(\vx, \vxp) = \exp{-\frac{(\vx - \vxp)^2}{2\sigma_p^2}}$ \\
     \textbf{Polynomial Kernel} $k(\vx, \vxp) = (1 + \transpose{\vx} \vxp)^d$ \\
-    \textbf{Laplacian kernel}: $k(\vx, \vxp) = \exp{\left(-\alpha \norm{\vx - \vxp}\right)}$
+    \textbf{Laplacian kernel}: $k(\vx, \vxp) = \exp{(-\alpha \norm{\vx - \vxp})}$
 \end{framed}
 \begin{framed}
     \textbf{Properties of Kernels}:  \\

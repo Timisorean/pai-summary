@@ -1,4 +1,4 @@
-\documentclass[11pt,landscape, a4paper, fleqn]{extarticle}
+\documentclass[10.5pt,landscape, a4paper, fleqn]{extarticle}
 \usepackage{multicol}
 \usepackage{calc}
 \usepackage{xspace}
@@ -14,7 +14,7 @@
 \usepackage{setspace}
 \usepackage{dsfont}
 \usepackage[italic]{derivative}
-\usepackage{amsmath,amsfonts,amsthm,amssymb,mathrsfs,bbm,mathtools,nicefrac}\usepackage{tcolorbox}
+\usepackage{amsmath,amsfonts,amsthm,amssymb,mathrsfs,bbm,mathtools,nicefrac}
 \usepackage[utf8]{inputenc}
 \usepackage{enumitem}
 \usepackage{wrapfig}
@@ -29,18 +29,38 @@
 
 % \usepackage[extreme]{savetrees}
 \usepackage{setspace}
-\setstretch{0.85}
+\setstretch{0.8}
 
-\usepackage{microtype}
+% Reduce letter spacing
+\usepackage[
+  tracking=true,
+  letterspace=-80,
+]{microtype}
 \UseMicrotypeSet[tracking]{alltext}
-\SetTracking{encoding = *, family = *}{ -50 } % Negative values reduce spacing
+
+% Reduce space between words
+\AtBeginDocument{
+  \spaceskip=0.2em % Fixed width
+  \xspaceskip=0.2em % Fixed width for sentence endings
+}
 
 \usepackage{amsmath}
 \setlength{\mathindent}{0pt}  % Removes the left margin/indent for formulas
 
+% Reduce math spacing
 \thinmuskip=1mu
 \medmuskip=1mu
 \thickmuskip=1mu
+
+% Reduce list spacing
+\setlist[itemize]{
+  labelsep=1pt,                 % Reduces margin to the right of the dot
+  label=\scalebox{0.7}{\textbullet}, % Reduces size of the dot (adjust 0.7 as needed)
+  leftmargin=*, % Maintains alignment with the text border
+  noitemsep,
+  nosep,
+  align=left,
+}
 
 \geometry{a4paper, layouthoffset=0mm, margin=1mm, bottom=2mm}
 
@@ -99,13 +119,13 @@
     colback=background_color!15!white,
     colframe=black,
     boxrule=0.3pt,
-    before skip=1mm,    % 2mm space before the box
-    after skip=1mm,     % 2mm space after the box
-    top=0.5mm,          % Tightens internal top space
-    bottom=0.5mm,       % Tightens internal bottom space
+    before skip=0.5mm,  % 2mm space before the box
+    after skip=0.5mm,   % 2mm space after the box
+    top=0.2mm,          % Tightens internal top space
+    bottom=0.2mm,       % Tightens internal bottom space
     boxsep=0mm,         % Removes the "buffer" zone around text
-    left=1mm,
-    right=1mm,
+    left=0.5mm,
+    right=0.5mm,
     arc=1mm,            % Adds the slight rounding seen in your image
 ]}
 {\end{tcolorbox}}

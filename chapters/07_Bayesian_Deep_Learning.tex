@@ -11,5 +11,5 @@
     $\vthetahat_\MAP = \argmin_\vtheta \frac{1}{2 \sigmap^2} \norm{\vtheta}_2^2 + \frac{1}{2 \sigman^2} \sum_{i=1}^n (y_i - f(\vx_i; \vtheta))^2$. Update rule: $\vtheta \gets \vtheta(1 - \frac{\eta_t}{\sigmap^2}) + \eta_t \sum_{i=1}^n \grad \log p(y_i \mid \vx_i, \vtheta)$
 \end{framed}
 \textbf{Heteroscedastic Noise}: Use a neural network with 2 outputs $f_1, f_2$, and define: $y \mid \vx, \vtheta \sim \N{\mu(\vx; \vtheta)}{\sigma^2(\vx; \vtheta)}$ where $\mu(\vx; \vtheta) \defeq f_1(\vx; \vtheta)$ and $\sigma^2(\vx; \vtheta) \defeq \exp(f_2(\vx; \vtheta))$.
-$\log p(y_i \mid \vx_i, \vtheta) = \const - \frac{1}{2} \brackets*{\log \sigma^2(\vx_i; \vtheta) + \frac{(y_i - \mu(\vx_i; \vtheta))^2}{\sigma^2(\vx_i; \vtheta)}}$.
+$\log p(y_i \mid \vx_i, \vtheta) = \const - \frac{1}{2} \brackets{\log \sigma^2(\vx_i; \vtheta) + \frac{(y_i - \mu(\vx_i; \vtheta))^2}{\sigma^2(\vx_i; \vtheta)}}$.
 Can approximate the predictive distribution by sampling from the variational posterior $p(\ys \mid \vxs, \vx_{1:n}, \vy_{1:n}) \approx \E[\theta \sim q_\vlambda]{p(\ys \mid \vxs, \vtheta)}\approx \frac{1}{m} \sum_{i=1}^m p(\ys \mid \vxs, \vtheta^{(i)})$.
