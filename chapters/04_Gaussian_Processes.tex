@@ -34,7 +34,7 @@ $f \mid \vx_{1:n}, y_{1:n} \sim \GP{\mu'}{k'}$ where $
 
 \begin{framed}
     \textbf{Maximizing marginal likelihood}: optimizes the $\vtheta$ across all realizations of $\vf$ (somewhat regularization, avoids overfitting without train and validation split):\\
-    $\begin{aligned}
+    $\begin{aligned}[t]
         \vthetahat_\MLE &\defeq \argmax_{\vtheta} p(y_{1:n} \mid \vx_{1:n}, \vtheta) \\[-2.8ex]
         &= \argmax_{\vtheta} \int p(y_{1:n} \mid \vx_{1:n}, f, \vtheta) p(f \mid \vtheta) \,d f
     \end{aligned}$\\[-2ex]

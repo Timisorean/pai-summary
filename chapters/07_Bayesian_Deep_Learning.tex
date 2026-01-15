@@ -1,15 +1,89 @@
+\vspace{0.5mm}\hrule\vspace{0.5mm}
 \section{Bayesian Deep Learning}
+
+\textbf{Universal approx. theorem:} Any ANN with a single hidden layer (arbitrary width) and non-poly. activation fn. can approx. any cont. fn. to an arbitrary accuracy.
+
 \begin{framed}
-    A deep \textbf{neural network} is a function: $\vf(\vx; \vtheta) \defeq \vvarphi(\mW_L \vvarphi(\mW_{L-1} ( \cdots \vvarphi(\mW_1 \vx))))$, where $\vtheta \defeq [\mW_1, \dots, \mW_L]$ is a vector of \textbf{weights}, and $\varphi : \R \to \R$ is a component-wise nonlinear \textbf{activation function}. Examples of such: \\
-    \textbf{Hyperbolic tangent}: $\mathrm{Tanh}(z) \defeq \frac{\exp(z) - \exp(-z)}{\exp(z) + \exp(-z)}$ \\
-    \textbf{Rectified linear unit}: $\mathrm{ReLU}(z) \defeq \max \{z, 0\} \in [0, \infty)$.
+    \textbf{DNNs}: $\vf(\vx; \vtheta) \defeq \vvarphi(\mW_L \vvarphi(\mW_{L-1} ( \cdots \vvarphi(\mW_1 \vx))))$, where $\vtheta \defeq [\mW_1, \dots, \mW_L]$ are \textbf{weights}, and $\varphi : \R \to \R$ is a component-wise non-linear \textbf{activation fn.}.
 \end{framed}
-\textbf{Softmax}: $\sigma_i(\vf) \defeq \frac{\exp(f_i)}{\sum_{j=1}^c \exp(f_j)}$ (classification)
+
+\begin{itemize}
+    \item \textbf{Softmax}: $\sigma_i(\vf) \defeq \frac{\exp(f_i)}{\sum_{j=1}^c \exp(f_j)}$ (classification)\\[-0.5ex]
+    $\nabla_z \sigma_i(\vf) = \sigma_i(\vf)(1 - \sigma_i(\vf))$\vspace{-0.5ex}
+    \item \textbf{Hyperbolic tangent}: $\mathrm{Tanh}(z) \defeq \frac{\exp(z) - \exp(-z)}{\exp(z) + \exp(-z)}$\\[-0.5ex]
+    $\nabla_z \mathrm{Tanh}(z) = 1 - \mathrm{Tanh}^2(z)$; $\mathrm{Tanh}(z) = 2 \sigma (2z) - 1$; 
+    \item \textbf{Rectified linear unit}: $\mathrm{ReLU}(z) \defeq \max \{z, 0\} \in [0, \infty)$\\[-0.5ex]
+    $\nabla_z \mathrm{ReLU}(z) = \mathbf 1_{\{z \ge 0\}}$
+\end{itemize}
+
+\vspace{0.5mm}\hrule\vspace{0.5mm}
+
+For linear regression, minimizing MSE/CE \textbf{corresponds to MLE} under a Gaussian likelihood.
+
+\begin{itemize}
+    \item \textbf{MSE loss:} $\ell_\mse(\vtheta; \spD) \defeq \frac1n \sum_{i=1}^n (f(\vx_i; \vtheta) - y_i)^2$\vspace{-0.5ex}
+    \item \textbf{CE loss:} $\ell_\ce(\vtheta; \spD)) \defeq - \frac1n \sum_{i=1}^n \log q_\vtheta(\vy_i \mid \vx_i)$
+\end{itemize}
+
 \begin{framed}
-    \textbf{Bayesian neural networks}: Gaussian prior on weights $\vtheta \sim \N{\vzero}{\sigmap^2 \mI}$, and Gaussian likelihood to describe how well the data is described by the model: \\
-    $y \mid \vx, \vtheta \sim \N{f(\vx; \vtheta)}{\sigman^2}$. The MAP estimate is: \\
-    $\vthetahat_\MAP = \argmin_\vtheta \frac{1}{2 \sigmap^2} \norm{\vtheta}_2^2 + \frac{1}{2 \sigman^2} \sum_{i=1}^n (y_i - f(\vx_i; \vtheta))^2$. Update rule: $\vtheta \gets \vtheta(1 - \frac{\eta_t}{\sigmap^2}) + \eta_t \sum_{i=1}^n \grad \log p(y_i \mid \vx_i, \vtheta)$
+    \textbf{BNNs}: Gaussian prior on weights $\vtheta \sim \N{\vzero}{\sigmap^2 \mI},$\\[-0.5ex]
+    and Gaussian likelihood to describe how well data is described by the model: $y \mid \vx, \vtheta \sim \N{f(\vx; \vtheta)}{\sigman^2}$.\\
+    The \textbf{MAP estimate} is:\\
+    \scalebox{0.9}{$\vthetahat_\MAP = \argmin_\vtheta \frac{1}{2 \sigmap^2} \norm{\vtheta}_2^2 + \frac{1}{2 \sigman^2} \sum_{i=1}^n (y_i - f(\vx_i; \vtheta))^2$}.\\[-0.5ex]
+    Update rule: \scalebox{0.9}{$\vtheta \gets \vtheta(1 - \frac{\eta_t}{\sigmap^2}) + \eta_t \sum_{i=1}^n \grad \log p(y_i \mid \vx_i, \vtheta)$}.
 \end{framed}
-\textbf{Heteroscedastic Noise}: Use a neural network with 2 outputs $f_1, f_2$, and define: $y \mid \vx, \vtheta \sim \N{\mu(\vx; \vtheta)}{\sigma^2(\vx; \vtheta)}$ where $\mu(\vx; \vtheta) \defeq f_1(\vx; \vtheta)$ and $\sigma^2(\vx; \vtheta) \defeq \exp(f_2(\vx; \vtheta))$.
-$\log p(y_i \mid \vx_i, \vtheta) = \const - \frac{1}{2} \brackets{\log \sigma^2(\vx_i; \vtheta) + \frac{(y_i - \mu(\vx_i; \vtheta))^2}{\sigma^2(\vx_i; \vtheta)}}$.
-Can approximate the predictive distribution by sampling from the variational posterior $p(\ys \mid \vxs, \vx_{1:n}, \vy_{1:n}) \approx \E[\theta \sim q_\vlambda]{p(\ys \mid \vxs, \vtheta)}\approx \frac{1}{m} \sum_{i=1}^m p(\ys \mid \vxs, \vtheta^{(i)})$.
+
+\textbf{Also modeling heteroscedastic noise}: Use a neural network with 2 outputs $f_1, f_2$, and define: $y \mid \vx, \vtheta \sim \N{\mu(\vx; \vtheta)}{\sigma^2(\vx; \vtheta)}$ where $\mu(\vx; \vtheta) \defeq f_1(\vx; \vtheta)$ and $\sigma^2(\vx; \vtheta) \defeq \exp(f_2(\vx; \vtheta))$. Likelihood term:\\[-0.5ex]
+\scalebox{0.9}{$\log p(y_i \mid \vx_i, \vtheta) = \const - \frac{1}{2} \brackets{\log \sigma^2(\vx_i; \vtheta) + \frac{(y_i - \mu(\vx_i; \vtheta))^2}{\sigma^2(\vx_i; \vtheta)}}$}.
+
+\vspace{0.5mm}\hrule\vspace{0.5mm}
+
+\begin{itemize}
+    \item BNN learning and inference are \textbf{generally intractable} when the noise is not assumed to be homoscedastic and known. Thus, we need approx. inference.
+    \item Goal: approx. true posterior $p(\vtheta \mid \spD)$ with simpler var-\\iational distr. $q_\vlambda$ typically family of indep. Gaussians.
+    \item Achieved by max. ELBO with SGD and reparm. trick.
+    \item We can approx. the predictive distr. by sampling from the variational posterior $p(\ys \mid \vxs, \vx_{1:n}, \vy_{1:n}) \approx \E[\theta \sim q_\vlambda]{p(\ys \mid \vxs, \vtheta)}\approx \frac{1}{m} \sum_{i=1}^m p(\ys \mid \vxs, \vtheta^{(i)})$.
+    \item Intuitively, variational inference in BNNs can be interpreted as averaging the predictions of multiple NNs drawn according to the variational posterior $q_\vlambda$.
+    \item Using Monte Carlo samples estimate mean and var.:\\
+    \scalebox{0.8}{$\E{\ys \mid \vxs, \vx_{1:n}, \vy_{1:n}} \approx \frac1m \sum_{i=1}^m \mu(\vxs; \vtheta^{(i)})$}\\
+    \scalebox{0.8}{$\begin{aligned}[t]
+        \Var{&\ys \mid \vxs, \vx_{1:n}, \vy_{1:n}}\\[-1ex]
+        &\approx \E[\vtheta]{\Var[\ys]{\ys \mid \vxs, \vtheta}} + \Var[\vtheta]{\E[\ys]{\ys \mid \vxs, \vtheta}}\\[-1ex]
+        &\approx \E[\vtheta]{\sigma^2(\vxs; \vtheta)} + \Var[\vtheta]{\mu(\vxs; \vtheta)}\\[-1ex]
+        &\approx \underbrace{\frac1m \sum_{i=1}^m \sigma^2(\vxs; \vtheta^{(i)})}_\text{aleatoric} +  \underbrace{\frac1{m-1} \sum_{i=1}^m (\mu(\vxs; \vtheta^{*(i)}) - \bar\mu(\vxs))^2}_\text{epistemic}
+    \end{aligned}
+    $}
+\end{itemize}
+
+\vspace{0.5mm}\hrule\vspace{0.5mm}
+
+Alternative inference techniques:
+\begin{itemize}
+    \item \textbf{Dropout/Dropconnect} randomly omits vertices/\\
+    edges of the comp. graph. For valid interpretation of this as variational inference, we also need to perform dropout/dropconnect during inference.
+    \item Dropout masks will overlap, making predictions highly correlated, leading to underestimation of epistemic uc. \textbf{Masksembles} mitigate by choosing fixed set of pre-defined dropout masks (controlled overlap).
+    \item \textbf{Probabilistic ensembles:} learn $m$ different NN over random chosen subsets of train data for each network.
+\end{itemize}
+
+\columnbreak
+
+\begin{framed}
+     Popular method: \textbf{evidence of a val. set}; How well is val. set described by trained model:\\
+     \scalebox{0.8}{$\log p(y_{1:m}^\val \mid \vx_{1:m}^\val, \vx_{1:n}^\train y_{1:n}^\train) \gtrapprox \frac1k \sum_{j=1}^k \sum_{i=1}^m \log p(y_i^\val \mid \vx_i^\val, \vtheta^{(j)})$}
+\end{framed}
+
+\begin{framed}
+     \begin{itemize}
+         \item \textbf{Frequency:} Proportion of samples in bin $m$ that belong to 1: $\mathrm{freq}(B_m) \defeq \frac1{\abs{B_m}} \sum_{i \in B_m} \mathbf 1 \{\spY_i = 1\}$
+         \item \textbf{Confidence:} Avg. conf. of samples in bin $m$ belonging to 1: $\mathrm{conf}(B_m) \defeq \frac1{\abs{B_m}} \sum_{i \in B_m} \mathbb P \{\spY_i = 1 \mid \vx_i\}$
+     \end{itemize}
+\end{framed}
+
+A model is \textbf{well-calibrated} if its confidence coincides with its acc. across many preds.: $\text{freq}(B_m) \approx \text{conf}(B_m)$
+
+\begin{framed}
+    \begin{itemize}
+        \item \textbf{ECE}: $\ell_{\mathrm{ECE}} \defeq \sum_{m=1}^M \frac{\card{\sB_m}}{n} \abs{\mathrm{freq}(\sB_m) - \mathrm{conf}(\sB_m)}$
+        \item \textbf{MCE}: $\ell_{\mathrm{ECE}} \defeq \underset{m \in [M]}{\max} \frac{\card{\sB_m}}{n} \abs{\mathrm{freq}(\sB_m) - \mathrm{conf}(\sB_m)}$
+    \end{itemize}
+\end{framed}

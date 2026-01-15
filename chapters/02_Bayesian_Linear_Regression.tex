@@ -1,7 +1,7 @@
 \vspace{0.5mm}\hrule\vspace{0.5mm}
 \section{Bayesian Linear Regression (BLR)}
 \vspace{-5pt}
-\scalebox{0.9}{$\begin{aligned}
+\scalebox{0.9}{$\begin{aligned}[t]
     \vwhat_{\ls} &\defeq \underset{\vw \in \R^d}{\argmin} \norm{\vy - \mX\vw}^2_2 = \underset{\vw \in \R^d}{\argmin} \sum_{i=1}^n (y_i - \transpose\vw \vx_i)^2 \\[-1.5ex]
     \vwhat_{\ridge} &\defeq \underset{\vw \in \R^d}{\argmin} \norm{\vy - \mX\vw}^2_2 + \lambda \norm{\vw}_2^2 \\[-1ex]
     % \vwhat_{\lasso} &\defeq \dots + \lambda \norm{\vw}_1; \quad \vwhat_{\ridge} \defeq \dots + \lambda \norm{\vw}_2^2

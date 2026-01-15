@@ -91,7 +91,8 @@
 
 \textbf{Gaussian properties}
 \begin{itemize}
-    \item \textbf{Gaussians have maximum entropy among all distr.} with known mean and variance: $\frac12 \ln(e \cdot 2 \pi \sigma^2)$
+    \item \textbf{Gaussians have max. entropy among all distr.}\\[-0.5ex]
+    with known mean and variance: $\sfrac{1}{2} \cdot \log \parentheses{(2 \pi e)^d \det{\mSigma}}$
     \item Jointly Gaussian random vectors, $\rX$ and $\rY$, are independent iff $\rX$ and $\rY$ are uncorrelated.
     \item Closed under marginalization and conditioning.
     \begin{framed}
@@ -114,7 +115,6 @@
             \item \scalebox{0.9}{$\N{\vmu_A}{\mSigma_A} \cdot \N{\vmu_B}{\mSigma_B} \propto \N{\cdot}{\cdot}$}
         \end{itemize}
     \end{framed}
-    
 \end{itemize}
 
 \vspace{0.5mm}\hrule\vspace{0.5mm}
@@ -142,7 +142,3 @@ The \textbf{log-prior} $\log p(\vtheta)$ acts as a regularizer. Common:
     \item $p(\vtheta) = \Laplace[\vtheta]{\vzero}{\lambda}$ gives $-\log p(\vtheta) = \lambda \norm{\vtheta}_1 + \const$
     \item Uniform prior gives $\const$ (no regularization, MAP is equivalent to the MLE)
 \end{itemize}
-
-% \begin{framed}
-%      \textbf{Expected calibration error}: For $m$ bins: $\ell_{\mathrm{ECE}} \defeq \sum_{m=1}^M \frac{\card{\sB_m}}{n} \abs{\mathrm{freq}(\sB_m) - \mathrm{conf}(\sB_m)}$
-% \end{framed}
