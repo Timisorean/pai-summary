@@ -43,7 +43,7 @@ For linear regression, minimizing MSE/CE \textbf{corresponds to MLE} under a Gau
     \item Goal: approx. true posterior $p(\vtheta \mid \spD)$ with simpler var-\\iational distr. $q_\vlambda$ typically family of indep. Gaussians.
     \item Achieved by max. ELBO with SGD and reparm. trick.
     \item We can approx. the predictive distr. by sampling from the variational posterior $p(\ys \mid \vxs, \vx_{1:n}, \vy_{1:n}) \approx \E[\theta \sim q_\vlambda]{p(\ys \mid \vxs, \vtheta)}\approx \frac{1}{m} \sum_{i=1}^m p(\ys \mid \vxs, \vtheta^{(i)})$.
-    \item Intuitively, variational inference in BNNs can be interpreted as averaging the predictions of multiple NNs drawn according to the variational posterior $q_\vlambda$.
+    \item VI in BNNs can be seen as avg. preds. of multiple NNs drawn acc. to the variational posterior $q_\vlambda$.
     \item Using Monte Carlo samples estimate mean and var.:\\
     \scalebox{0.8}{$\E{\ys \mid \vxs, \vx_{1:n}, \vy_{1:n}} \approx \frac1m \sum_{i=1}^m \mu(\vxs; \vtheta^{(i)})$}\\
     \scalebox{0.8}{$\begin{aligned}[t]
@@ -59,16 +59,13 @@ For linear regression, minimizing MSE/CE \textbf{corresponds to MLE} under a Gau
 
 Alternative inference techniques:
 \begin{itemize}
-    \item \textbf{Dropout/Dropconnect} randomly omits vertices/\\
-    edges of the comp. graph. For valid interpretation of this as variational inference, we also need to perform dropout/dropconnect during inference.
+    \item \textbf{Dropout/Dropconnect} randomly select/omits vertices/edges of the comp. graph. For valid interpretation of this as variational inference, we also need to perform dropout/dropconnect during inference.
     \item Dropout masks will overlap, making predictions highly correlated, leading to underestimation of epistemic uc. \textbf{Masksembles} mitigate by choosing fixed set of pre-defined dropout masks (controlled overlap).
     \item \textbf{Probabilistic ensembles:} learn $m$ different NN over random chosen subsets of train data for each network.
 \end{itemize}
 
-\columnbreak
-
 \begin{framed}
-     Popular method: \textbf{evidence of a val. set}; How well is val. set described by trained model:\\
+     \textbf{Evidence of val. set}; How well model desc. val. set?:\\
      \scalebox{0.8}{$\log p(y_{1:m}^\val \mid \vx_{1:m}^\val, \vx_{1:n}^\train y_{1:n}^\train) \gtrapprox \frac1k \sum_{j=1}^k \sum_{i=1}^m \log p(y_i^\val \mid \vx_i^\val, \vtheta^{(j)})$}
 \end{framed}
 

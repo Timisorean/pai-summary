@@ -1,7 +1,10 @@
+\vspace{0.5mm}\hrule\vspace{0.5mm}
 \section{Bayesian Optimization}
+
 \begin{framed}
-    The \textbf{Regret} for a time horizon $T$ associated with choices $\{\vx_t\}_{t=1}^T$ is defined as: $R_T \defeq \sum_{t=1}^T \underbrace{({\max_\vx \opt{f}(\vx) - \opt{f}(\vx_t)})}_{\text{\textit{instantaneous regret}}}$.
+    \textbf{Regret} for time horizon $T$ associated with choices $\{\vx_t\}_{t=1}^T$ is: $R_T \defeq \sum_{t=1}^T \underbrace{({\max_\vx \opt{f}(\vx) - \opt{f}(\vx_t)})}_{\text{\textit{instantaneous regret}}}$.
 \end{framed}
+
 Goal: Achieve sublinear regret: $\lim_{T\to\infty} \frac{R_T}{T} = 0$.
 \includegraphics[width=0.98\linewidth,trim={0 0 3cm 0}]{images/Bayesian_Optimization.png}
 It is common to use an \textbf{aquisition function} to greedly pick the next point to sample based on the current model. \\
