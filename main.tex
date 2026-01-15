@@ -27,6 +27,7 @@
 \usepackage{wrapfig}
 \usepackage{graphicx}
 \usepackage{xfrac}
+\usepackage{adjustbox}
 
 % \usepackage[extreme]{savetrees}
 \usepackage{setspace}
@@ -55,6 +56,13 @@
 \setlist[itemize]{
   labelsep=1pt,                 % Reduces margin to the right of the dot
   label=\scalebox{0.7}{\textbullet}, % Reduces size of the dot (adjust 0.7 as needed)
+  leftmargin=*, % Maintains alignment with the text border
+  noitemsep,
+  nosep,
+  align=left,
+}
+\setlist[enumerate]{
+  labelsep=1pt,                 % Reduces margin to the right of the dot
   leftmargin=*, % Maintains alignment with the text border
   noitemsep,
   nosep,
@@ -135,10 +143,11 @@
 \input{chapters/02_Bayesian_Linear_Regression}
 \input{chapters/04_Gaussian_Processes}
 \input{chapters/05_Variantional_Inference}
-\input{chapters/06_Markov_Chains}
+% \input{chapters/06_Markov_Chains}
 \input{chapters/07_Bayesian_Deep_Learning}
 \input{chapters/08_Active_Learning}
 \input{chapters/09_Bayesian_Optimization}
+\input{chapters/09.5_Diffusion}
 \input{chapters/10_Markov_Decision_Processes}
 \input{chapters/11_Tabular_Reinforcement_Learning}
 \input{chapters/12_Model-free_Reinforcement_Learning}

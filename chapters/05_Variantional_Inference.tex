@@ -42,13 +42,12 @@ Perform inference using the variations approximation: \scalebox{0.9}{$\begin{ali
     $g(\E{X}) \leq \E{g(X)}$; if $h$ concave: $h(\E{X}) \geq \E{h(X)}$
 \end{framed}
 
-
 \begin{framed}
     The \textbf{cross-entropy} of $q$ relative to $p$ is: \\
     $\crH{p}{q} \defeq \E[x \sim p]{\S{q(x)}} = \E[x \sim p]{- \log q(x)}$.
 \end{framed}
 \begin{framed}
-    \textbf{KL-divergence}: measures the additional expected surprise when observing samples from $p$ that is due to assuming the (wrong) distribution $q$ and which is not inherent in the distribution $p$ already.\\[-0.5ex]
+    \textbf{KL-div.}: measures additional expected surprise when observing samples from $p$ that is due to assuming (wrong) $q$ and which is not inherent in $p$ already.\\[-0.5ex]
     $\KL{p}{q} \defeq \crH{p}{q} - \H{p} = \E[\vtheta \sim p]{\log \frac{p(\vtheta)}{q(\vtheta)}}$
     \begin{itemize}
         \item $\KL{p}{q} \geq 0$; $\KL{p}{q} = 0$ iff $p = q$ almost surely 
@@ -60,18 +59,17 @@ Note that: $\crH{p}{q} = \H{p} + \KL{p}{q} \geq \H{p}$.\\
 
 \begin{itemize}
     \item $\KL{\Bern{p}}{\Bern{q}} = p \log \frac{p}{q} + (1-p) \log \frac{(1-p)}{(1-q)}$
-    \item For ${p \defeq \N{\vmu_p}{\mSigma_p}}$ and ${q \defeq \N{\vmu_q}{\mSigma_q}}$: \scalebox{0.9}{$\begin{aligned}[t]
-    \KL{p}{q} = \frac{1}{2} (\mathrm{tr}(\inv{\mSigma_q} \mSigma_p) + \transpose{(\vmu_p - \vmu_q)} &\inv{\mSigma_q} (\vmu_p - \vmu_q) \phantom{\frac12}\\[-1.6ex]
-    &- d + \log \frac{\det{\mSigma_q}}{\det{\mSigma_p}})\end{aligned}$}
+    \item For ${p \defeq \N{\vmu_p}{\mSigma_p}}$ and ${q \defeq \N{\vmu_q}{\mSigma_q}}$: $\KL{p}{q} =$\\
+    \scalebox{0.8}{$\frac12 \left(\mathrm{tr}(\inv{\mSigma_q} \mSigma_p) + \transpose{(\vmu_p - \vmu_q)} \inv{\mSigma_q} (\vmu_p - \vmu_q) - d + \log \frac{\det{\mSigma_q}}{\det{\mSigma_p}}\right)$}
 \end{itemize}
 
 \vspace{0.5mm}\hrule\vspace{0.5mm}
 
 \begin{itemize}
-    \item \textbf{Forward KL}: $\qs_1 \defeq \argmin_{q \in \spQ} \KL{p}{q}$\\[-0.2ex]
-    (more conservative and yields more “desired” approx.)
+    \item \textbf{Forward KL}: $\qs_1 \defeq \argmin_{q \in \spQ} \KL{p}{q}$(mode\\[-0.2ex]
+    avg., more conservative, yields more “desired” approx.)
     \item \textbf{Reverse KL}: $\qs_2 \defeq \argmin_{q \in \spQ} \KL{q}{p}$ (greedily\\[-0.2ex]
-    selects mode, underestimate var., overconfident preds.)
+     mode seeking, underestimate var., overconfident preds.)
 \end{itemize}
 
 \begin{framed}
@@ -84,7 +82,7 @@ Note that: $\crH{p}{q} = \H{p} + \KL{p}{q} \geq \H{p}$.\\
 \end{framed}
 
 \begin{itemize}
-    \item Max. ELBO selects a variational distr. $q$ that is close to prior distr. $p(\cdot)$ while also max. avg. likelihood of data $p(y_{1:n} \mid \vx_{1:n}, \vtheta)$ for $\vtheta \sim q$. This is in contrast to MAP estimation, which picks single mode $\vtheta$ that max. the likelihood and proximity to the prior.
+    \item Max. ELBO selects a var. distr. $q$ that is close to prior $p(\cdot)$ while also max. avg. data likelihood \scalebox{0.9}{$p(y_{1:n} \mid \vx_{1:n}, \vtheta)$} for $\vtheta \sim q$. Contrast to MAP, which picks single mode $\vtheta$ that max. the likelihood and proximity to the prior.
     \item ELBO gradient is gen. \textbf{intractable} (use reparam. trick).
 \end{itemize}
 
