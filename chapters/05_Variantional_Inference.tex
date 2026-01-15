@@ -10,7 +10,7 @@ Perform inference using the variations approximation: $p(\ys \mid \vxs, \vx_{1:n
     The \textbf{entropy} of a distribution $p$ is the average surprise of samples from $p$:\\
     $\H{p} \defeq \E[x \sim p]{\S{p(x)}} = \E[x \sim p]{- \log p(x)}$.
 \end{framed}
-\textbf{Gaussian}: $\H{\N{\vmu}{\mSigma}} = \frac{1}{2} \log \parentheses*{(2 \pi e)^d \det{\mSigma}}$.
+\textbf{Gaussian}: $\H{\N{\vmu}{\mSigma}} = \frac{1}{2} \log \parentheses{(2 \pi e)^d \det{\mSigma}}$.
 \begin{framed}
     \textbf{Jensen's Inequality}: Given a convex function $g$, we have:
     $g(\E{X}) \leq \E{g(X)}$ and if $h$ is concave:  $h(\E{X}) \geq \E{h(X)}$

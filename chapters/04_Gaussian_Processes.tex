@@ -1,31 +1,115 @@
-\section{Gaussian Processes}
+\vspace{0.5mm}\hrule\vspace{0.5mm}
+\section{Gaussian Processes (GPs)}
+
 \begin{framed}
-    A \textbf{Gaussian process} is an infinite set of random variables such that any finite number of them are jointly Gaussian. We use a set $\spX$ to index the collection of random variables.
-    A Gaussian process is characterized by a \textbf{mean function} $\mu : \spX \to \R$ and a \textbf{covariance function} (or \textbf{kernel function}) $k : \spX \times \spX \to \R$ such that for any $\sA \defeq \{\vx_1, \dots, \vx_m\} \subseteq \spX$, we have 
-  $\vf_\sA \defeq \transpose{[f_{\vx_1} \; \cdots \; f_{\vx_m}]} \sim \N{\vmu_\sA}{\mK_{\sA\sA}}$ 
-We write $f \sim \GP{\mu}{k}$.
-In particular, given a mean function, covariance function, and using the homoscedastic noise assumption, 
+    An infinite set of random variables s.t. any finite number of them are jointly Gaussian. We use set $\spX$ to index the collection of random variables.
+    It is def. by \textbf{mean fn.} $\mu : \spX \to \R$ and \textbf{covar./kernel fn.} $k : \spX \times \spX \to \R$ s.t. for any $\sA \defeq \{\vx_1, \dots, \vx_m\} \subseteq \spX$, we have $\vf_\sA \defeq \transpose{[f_{\vx_1} \; \cdots \; f_{\vx_m}]} \sim \N{\vmu_\sA}{\mK_{\sA\sA}}$.
+    We write $f \sim \GP{\mu}{k}$.
+    Using homoscedastic noise assumption:
   $\ys \mid \vxs, \mu, k \sim \N{\mu(\vxs)}{k(\vxs, \vxs) + \sigman^2}$
 \end{framed}
-\begin{framed}
-    \textbf{Maximize Marginal Likelihood}: \\
-    $ \vthetahat_\MLE \defeq \argmax_{\vtheta} p(y_{1:n} \mid \vx_{1:n}, \vtheta) \\= \argmax_{\vtheta} \int p(y_{1:n} \mid \vx_{1:n}, f, \vtheta) p(f \mid \vtheta) \,d f$.
-\end{framed}
-\textbf{Update:} Joint distribution of the observations $y_{1:n}$ and the noise-free prediction $\fs$ at a test point $\vxs$ as $\begin{bmatrix}
+
+\textbf{New point:} Joint distribution of the observations $y_{1:n}$ and the noise-free prediction $\fs$ at a test point $\vxs$\\
+as $\begin{bmatrix}
     \vy \\
     \fs \\
-  \end{bmatrix} \mid \vxs, \vx_{1:n} \sim \N{\Tilde{\vmu}}{\Tilde{\mK}}$ \\
-\includegraphics[width=\linewidth]{images/GP_Update}
-\textbf{GP posterior}: 
+\end{bmatrix} \mid \vxs, \vx_{1:n} \sim \N{\Tilde{\vmu}}{\Tilde{\mK}}$
+where \scalebox{0.9}{$\Tilde\vmu \defeq \begin{bmatrix}
+    \vmu_A \\
+    \mu(\vxs) \\
+\end{bmatrix}$}, \scalebox{0.9}{$\Tilde\mK \defeq \begin{bmatrix}
+\mK_{AA} + \sigma_n^2 \mI &  \vk_{\vxs, A} \\
+\transpose\vk_{\vxs, A} & \hspace{-8pt} k(\vxs, \vxs) \\
+\end{bmatrix}$}, \scalebox{0.9}{$\vk_{\vx, A} \defeq \transpose{[k(\vx, \vx_1) \dots k(\vx, \vx_n)]}$}
+
+\textbf{GP posterior update}: 
 $f \mid \vx_{1:n}, y_{1:n} \sim \GP{\mu'}{k'}$ where $
   \mu'(\vx) \defeq \mu(\vx) + \transpose{\vk_{\vx,\sA}} \inv{(\mK_{\sA\sA} + \sigman^2 \mI)} (\vy_\sA - \vmu_\sA)$ and $
   k'(\vx, \vxp) \defeq k(\vx, \vxp) - \transpose{\vk_{\vx,\sA}} \inv{(\mK_{\sA\sA} + \sigman^2 \mI)} \vk_{\vxp,\sA}$
-For GP-Regression ($y_{1:n} \mid \vx_{1:n}, \vtheta \sim \N{\vzero}{\mK_{f,\vtheta} + \sigman^2 \mI}$), write $\mK_{\vy,\vtheta} \defeq \mK_{f,\vtheta} + \sigman^2 \mI$, and obtain: $\vthetahat_\MLE = \argmin_{\vtheta} \frac{1}{2} \transpose{\vy} \inv{\mK_{\vy,\vtheta}} \vy + \frac{1}{2} \log \det{\mK_{\vy,\vtheta}}$. Also:
-$\pdv{}{\theta_j} \log p(y_{1:n} \mid \vx_{1:n}, \vtheta) = \frac{1}{2} \tr{(\valpha \transpose{\valpha} - \inv{\mK_{\vy,\vtheta}}) \pdv{\mK_{\vy,\vtheta}}{\theta_j}}$.\\
-\textbf{Approximations}: Gaussian process need to invert Matrices $\rightarrow$ computational cost of $\BigO{n^3}$. \\ 
-\textbf{Local method}: When sampling at $\vx$ only condition on the samples $\vxp$, that are close, i.e. where $\abs{k(\vx, \vxp)} \geq \tau$ for some $\tau > 0$, instead of all samples. \textbf{Problem:} $\tau$ has to be chosen carefully: if $\tau$ is chosen too large, samples become essentially independent. \\
-\textbf{Kernel Approximation}: Construct a low dimensional feature map $\vphi : \R^d \to \R^m$ that approximates the kernel: $k(\vx, \vxp) \approx \transpose{\vphi(\vx)} \vphi(\vxp)$. Then apply Bayesian linear regression $\rightarrow$ time complexity of $\BigO{n m^2 + m^3}$. This can be done with \textbf{Random Fourier features}: a \textit{stationary} kernel $k$ can be interpreted as a function in one variable, and has an associated Fourier transform which we denote by $p(\vomega)$: $k(\vx-\vxp) = \int_{\R^d} p(\vomega) e^{i \transpose{\vomega} (\vx-\vxp)} \,d\vomega$.
+
+\begin{itemize}
+    \item The posterior covariance can only decrease when conditioning on more data, and is independent of $\vy_i$.
+    \item GP posterior takes $\BigO{n^3}$ because of mat. inversion.
+\end{itemize}
+
 \begin{framed}
-    \textbf{Bochner's Theorem} A continuous Kernel on $\R^d$ is p.s.d iff its Fourier transform $p(\vomega)$ is non-negative.
+    \textbf{Maximizing marginal likelihood}: optimizes the $\vtheta$ across all realizations of $\vf$ (somewhat regularization, avoids overfitting without train and validation split):\\
+    $\begin{aligned}
+        \vthetahat_\MLE &\defeq \argmax_{\vtheta} p(y_{1:n} \mid \vx_{1:n}, \vtheta) \\[-2.8ex]
+        &= \argmax_{\vtheta} \int p(y_{1:n} \mid \vx_{1:n}, f, \vtheta) p(f \mid \vtheta) \,d f
+    \end{aligned}$\\[-2ex]
+    Intuition:
+    \begin{itemize}
+        \item \textit{Underfit} models: likelihood is mostly small as data cannot be well described; prior is large as there are “fewer” fns. to choose from.
+        \item \textit{Overfit} models: likelihood is large for “some” fns. but small for “most” fns.; prior is small, as probability mass has to be distributed among “more” fns.
+    \end{itemize}
+     Maximizing encourages trading between a large likelihood and large prior, as one product term will be small.
 \end{framed}
-$\implies$ If continuous and stationary kernel is p.s.d. and scaled correctly then $p(\vomega)$ is a probability distribution named \textbf{spectral density} of $k$. The spectral density can be computed by: $p(\vomega) = \int_{\R^d} k(\vomega) e^{- i 2 \pi \transpose{\vxi} \vomega} \,d\vomega.$ \\ Now write the kernel as an expectation: $k(\vx-\vxp) = \int_{\R^d} p(\vomega) e^{i \transpose{\vomega} (\vx-\vxp)} \,d\vomega = \E[\vomega \sim p]{e^{i \transpose{\vomega}(\vx-\vxp)}}= \transpose{\vz(\vx)} \vz(\vxp)$, where $z_{\vomega,b}(\vx) \defeq \sqrt{2} \cos(\transpose{\vomega} \vx + b)$, and $\vz(\vx) \defeq \frac{1}{\sqrt{m}} \transpose{[z_{\vomega^{(1)},b^{(1)}}(\vx), \dots, z_{\vomega^{(m)},b^{(m)}}(\vx)]}$ is a randomized feature map of Fourier transforms $\vomega^{(i)} \iid p$ and $b^{(i)} \iid \Unif{\brackets{0, 2 \pi}}$. The error probability decays exponentially in $\epsilon$.
+
+\textbf{For GP regression}: $y_{1:n} \mid \vx_{1:n}, \vtheta \sim \N{\vzero}{\mK_{f,\vtheta} + \sigman^2 \mI}$, write $\mK_{\vy,\vtheta} \defeq \mK_{f,\vtheta} + \sigman^2 \mI$, and obtain: \\
+$\vthetahat_\MLE = \argmin_{\vtheta} \underbrace{\sfrac{1}{2} \cdot \transpose{\vy} \inv{\mK_{\vy,\vtheta}} \vy}_\text{Goodness of fit} + \underbrace{\sfrac{1}{2} \cdot \log \det{\mK_{\vy,\vtheta}}}_\text{"Volume" of model class}$
+
+The loss can be expressed in closed-form with $\valpha \defeq \mK_{\vy, \vtheta}^{-1}$:
+$\pdv{}{\theta_j} \log p(y_{1:n} \mid \vx_{1:n}, \vtheta) = \frac{1}{2} \tr{(\valpha \transpose{\valpha} - \inv{\mK_{\vy,\vtheta}}) \pdv{\mK_{\vy,\vtheta}}{\theta_j}}$
+
+This optimization problem is, in general, non-convex.
+
+\columnbreak
+
+\begin{framed}
+    \textbf{Reproducing kernel Hilbert space (RKHS):}\\
+    Given kernel $k: \spX \times \spX \rightarrow \R$, its corresponding RKHS is the space of functions $f$ defined as:\\
+    \scalebox{0.9}{$\spH_k(\spX) \defeq \{f(\cdot) = \sum_{i=1}^n \alpha_i k(\vx_i, \cdot) \mid n \in \mathbb N, \vx_i \in \spX, \alpha_i \in \R\}$}\\
+    The inner product of the RKHS is defined as:\\[-1ex]
+    $\ip{f, g}_k \defeq \sum_{i=1}^n \sum_{j=1}^{n'} \alpha_i \alpha_j' k(\vx_i, \vxp_j)$\\[-1ex]
+    where $g(\cdot) = \sum_{j=1}^{n'} \alpha_j' k(\vxp_j, \cdot)$.\\
+    The RKHS induces norm $\norm{\vf}_k = \sqrt{\ip{\vf, \vf}_k}$ measuring the “smoothness” or “complexity” of $\vf$.
+\end{framed}
+
+\begin{itemize}
+    \item For all $\vx \in \spX$ and $\vf \in \spH_k(\spX)$: $\vf(\vx)=\ip{\vf(\cdot), k(\vx, \cdot)}_k$
+    \item \textbf{Representer theorem:} Kernel $k$, $\lambda > 0$, $f \in \spH_k(\spX)$, and train data $\{(\vx_i, f(\vx_i))\}_{i=1}^n$. Let loss fn. $\mathcal L(f(\vx_1), \dots, f(\vx_n)) \in \R \cup \{\infty\}$ depend on $f$ only through its eval. at train points. Then, any minimizer\\[-0.5ex]
+    $\hat f \in \underset{f \in \spH_k(\spX)}{\argmin} \mathcal L(f(\vx_1), \dots, f(\vx_n)) + \lambda \norm{f}_k^2$ admits a\\[-0.5ex]
+    repr. of form\\[-3.8ex]
+    \hspace*{1.4cm}$\hat f(\vx) = \hat\va \vk_{\vx, \{\vx_i\}_{i=1}^n} = \sum_{i=1}^n \hat\alpha_i k(\vx, \vx_i)$
+    \item MAP estimate of a GP corresponds to the solution of a regularized linear regression problem in the RKHS of the kernel fn.:\\[-2.1ex]
+    \hspace*{1.45cm}\scalebox{0.9}{$\hat f \defeq \underset{f \in \spH_k(\spX)}{\argmin} - \log(y_{1:n} \mid \vx_{1:n}, f) + \frac12 \norm{f}_k^2$}\vspace{-0.8ex}
+    \item \textbf{GPs remain comp. tractable} even though they can model fns. over “infinite-dim.” feat. spaces.
+\end{itemize}
+
+\vspace{0.5mm}\hrule\vspace{0.5mm}
+
+\textbf{Approximations}: GP need to invert mat ($\BigO{n^3}$).
+\begin{itemize}
+    \item \textbf{Local method}: When sampling at $\vx$ only condition on samples $\vxp$, that are close: $\abs{k(\vx, \vxp)} \geq \tau$ for some $\tau > 0$. \textbf{Problem:} $\tau$ has to be chosen carefully: if $\tau$ is chosen too large, samples become essentially independent. Still expensive if “many” points are close.
+    
+    \item \textbf{Kernel approximation}: Construct a low dim. feat. map $\vphi : \R^d \to \R^m$ s.t.: $k(\vx, \vxp) \approx \transpose{\vphi(\vx)} \vphi(\vxp)$. 
+    \begin{itemize}
+        \item Transforms function-space view (GP) back into a\\[-0.5ex]
+    tractable weight-space view (BLR, $\BigO{n m^2 + m^3}$).
+        \item Can be done with \textbf{Random Fourier features}: a \textit{stationary} kernel $k$ can be interpreted as fn. in one variable, and has an associated Fourier transform.
+
+        \begin{framed}
+            \textbf{Bochner's Theorem} A continuous Kernel on $\R^d$ is p.s.d iff its Fourier transform $p(\vomega)$ is non-negative.
+        \end{framed}
+
+        Randomized feature map: $z_{\vomega,b}(\vx) \defeq \sqrt{2} \cos(\transpose{\vomega} \vx + b)$, with $\vomega^{(i)} \iid p$ and $b^{(i)} \iid \Unif{\brackets{0, 2 \pi}}$. Inner product $z(x)^\top z(x')$ is unbiased estimator of $k(x - x')$. Error prob. decays exp. in dim. of Fourier feature space $m$.
+        
+        % $\implies$ If continuous and stationary kernel is p.s.d. and scaled correctly then $p(\vomega)$ is a probability distribution named \textbf{spectral density} of $k$. The spectral density can be computed by: $p(\vomega) = \int_{\R^d} k(\vomega) e^{- i 2 \pi \transpose{\vxi} \vomega} \,d\vomega.$ \\ Now write the kernel as an expectation: $k(\vx-\vxp) = \int_{\R^d} p(\vomega) e^{i \transpose{\vomega} (\vx-\vxp)} \,d\vomega = \E[\vomega \sim p]{e^{i \transpose{\vomega}(\vx-\vxp)}}= \transpose{\vz(\vx)} \vz(\vxp)$, where $z_{\vomega,b}(\vx) \defeq \sqrt{2} \cos(\transpose{\vomega} \vx + b)$, and $\vz(\vx) \defeq \frac{1}{\sqrt{m}} \transpose{[z_{\vomega^{(1)},b^{(1)}}(\vx), \dots, z_{\vomega^{(m)},b^{(m)}}(\vx)]}$ is a randomized feature map of Fourier transforms $\vomega^{(i)} \iid p$ and $b^{(i)} \iid \Unif{\brackets{0, 2 \pi}}$. The error probability decays exponentially in $\epsilon$.
+    \end{itemize}
+
+    \item \textbf{Inducing point methods}: Idea is to summarize data around inducing pts. \scalebox{0.9}{$U \defeq \{\bar\vx_1, \dots, \bar\vx_n\}$}. Let \scalebox{0.9}{$\vf \defeq \transpose{[f(\vx_1) \dots, f(\vx_n)]}$, $\fs \defeq f(\vxs)$}, \scalebox{0.9}{$\vu \defeq \transpose{[f(\hat\vx_1) \dots f(\hat\vx_n)]}$}. Original GP recoverable with marginalization: \scalebox{0.9}{$p(\fs \mid \vf) = \int_{\R^k} p(\fs, \vf \mid \vu) p(\vu) \,d \vu$}. Approx. the joint prior, assuming $\fs$, $\vf$ are cond. indep. given \scalebox{0.9}{$\vu \sim \N{\vzero}{\mK_{UU}}$}\\[-0.2ex]
+    Train conditional: \scalebox{0.85}{$p(\vf \mid \vu) \sim \N{\vf; \mK_{AU} \mK_{UU}^{-1} \vu}{\mK_{AA} - \mQ_{AA}}$}\\[-0.2ex]
+    Test conditional: \scalebox{0.85}{$p(\fs \mid \vu) \sim \N{\fs; \mK_{\star U} \mK_{UU}^{-1} \vu}{\mK_{\star\star} - \mQ_{\star\star}}$}
+    w. \scalebox{0.9}{$\mQ_{ab} \defeq \mK_{aU} \mK_{UU}^{-1} \mK_{Ub}$}. \scalebox{0.9}{$\mK_{AA}$} represents the prior covar. and \scalebox{0.9}{$\mQ_{AA}$} represents covar. from inducing pts. Covar. mat. comp. is expensive; need to approx.:
+    \begin{itemize}
+        \item \textbf{Subset of regressors (SoR)}: Forgets about all var. and covar.\\[-2.5ex]
+        \hspace*{1.2cm}\scalebox{0.9}{$q_\SoR(\vf \mid \vu) \doteq \N{\vf; \mK_{AU} \mK_{UU}^{-1} \vu}{\vzero}$}\\[-0.5ex]
+        \hspace*{1.2cm}\scalebox{0.9}{$q_\SoR(\fs \mid \vu) \doteq \N{\fs; \mK_{\star U} \mK_{UU}^{-1} \vu}{\vzero}$}\vspace{-0.5ex}
+        \item \textbf{Fully independent training conditional (FITC)}: Keeps track of variances but forgets about covariance\\[-0.5ex]
+        \scalebox{0.9}{$q_\FITC(\vf \mid \vu) \doteq \N{\vf; \mK_{AU} \mK_{UU}^{-1} \vu}{\diag{\mK_{AA} - \mQ_{AA}}}$}\\[-0.5ex]
+        \scalebox{0.9}{$q_\FITC(\vf \mid \vu) \doteq \N{\fs; \mK_{\star U} \mK_{UU}^{-1} \vu}{\diag{\mK_{\star \star} - \mQ_{\star \star}}}$}
+    \end{itemize}
+
+    Comp. cost SoR/FITC is dom. by mat. inv. of $\mK_{UU}$, so cubic in num. inducing pts. and linear in data pts.
+\end{itemize}

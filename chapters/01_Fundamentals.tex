@@ -15,7 +15,7 @@
 
 \begin{itemize}
     \item Gaussian CDF has no closed-form
-    \item Gaussian can be repr. using $O(n^2)$ params.; $\Sigma \in \mathbb R^{n \times n}$
+    \item Gaussian can be repr. using $O(n^2)$ params.; $\Sigma \in \R^{n \times n}$
 \end{itemize}
 
 \begin{framed}
@@ -75,7 +75,7 @@
 \begin{itemize}
     \item If prior $p(\vx)$ and posterior $p(\vx \mid \vy)$ from same family of distr., prior is \textbf{conjugate prior} to the likelihood $p(\vy \mid \vx)$.
     \item Beta distr. is a conjugate prior to binomial likelihood.
-    \item Under some conditions, the Gaussian is self-conjugate (if we have Gaussian prior and likelihood then posterior also Gaussian).
+    \item Under some conditions, the Gaussian is self-conjugate (Gaussian prior and likelihood $\rightarrow$ posterior Gaussian).
 \end{itemize}
 
 \vspace{0.5mm}\hrule\vspace{0.5mm}
@@ -83,39 +83,38 @@
 \textbf{Choice of prior}
 \begin{itemize}
     \item Choosing non-informative prior in absence of evidence is \textbf{principle of indifference/insufficient reason}.
-    \item \textbf{Improper prior:} It is not required that the prior is a valid distr. (i.e., integrates to 1). We can still derive meaning from the posterior if its valid.
+    \item \textbf{Improper prior:} It is not required that the prior is a valid distr. (i.e., integrates to 1). We can still derive meaning from the posterior if it's valid.
     \item \textbf{Maximum entropy principle:} choose a prior from all possible distributions that are consistent with prior knowledge, s.t. one that makes the least “additional assumptions”, i.e., the prior that is least “informative”.
 \end{itemize}
 
 \vspace{0.5mm}\hrule\vspace{0.5mm}
 
-\textbf{Guassian properties}
+\textbf{Gaussian properties}
 \begin{itemize}
-    \item Additive and closed under affine transformations.
-    \item Closed under marginalization and conditioning.
-\end{itemize}
-
-\begin{framed}
-    \textbf{Marginal and conditional of Normal} \\
-    Let $\rX$ be Gaussian and index sets $\sA, \sB \subseteq [n]$. \\
-    For any \textbf{marginal distr.} $\rX_A \sim \N{\vmu_\sA}{\mSigma_{\sA\sA}}$ and \\
-    for any \textbf{conditional distr.}: \\
-    $\begin{aligned}[t]
-        \rX_\sA \mid \rX_\sB &= \vx_\sB \sim \N{\vmu_{\sA \mid \sB}}{\mSigma_{\sA \mid \sB}} \text{ where} \\[-1.5ex]
-        \vmu_{\sA \mid \sB} &\defeq \vmu_\sA + \mSigma_{\sA\sB}\inv{\mSigma_{\sB\sB}}(\vx_\sB - \vmu_\sB) \\[-1.5ex]
-        \mSigma_{\sA \mid \sB} &\defeq \mSigma_{\sA\sA} - \mSigma_{\sA\sB}\inv{\mSigma_{\sB\sB}}\mSigma_{\sB\sA}
-    \end{aligned}$ \\
-    Observe that the variance can only shrink.
-\end{framed}
-
-\begin{itemize}
+    \item \textbf{Gaussians have maximum entropy among all distr.} with known mean and variance: $\frac12 \ln(e \cdot 2 \pi \sigma^2)$
     \item Jointly Gaussian random vectors, $\rX$ and $\rY$, are independent iff $\rX$ and $\rY$ are uncorrelated.
-\end{itemize}
-
-\columnbreak
-
-\begin{itemize}
-    \item \textbf{Heteroscedastic} noise $\vepsilon_i$ may depend on $\vx_i$, while \textbf{Homoscedastic} may not.
+    \item Closed under marginalization and conditioning.
+    \begin{framed}
+        Let $\rX$ be Gaussian and index sets $\sA, \sB \subseteq [n]$. \\
+        For any \textbf{marginal distr.} $\rX_A \sim \N{\vmu_\sA}{\mSigma_{\sA\sA}}$ and \\
+        for any \textbf{conditional distr.}: \\
+        $\begin{aligned}[t]
+            \rX_\sA \mid \rX_\sB &= \vx_\sB \sim \N{\vmu_{\sA \mid \sB}}{\mSigma_{\sA \mid \sB}} \text{ where} \\[-1.5ex]
+            \vmu_{\sA \mid \sB} &\defeq \vmu_\sA + \mSigma_{\sA\sB}\inv{\mSigma_{\sB\sB}}(\vx_\sB - \vmu_\sB) \\[-1.5ex]
+            \mSigma_{\sA \mid \sB} &\defeq \mSigma_{\sA\sA} - \mSigma_{\sA\sB}\inv{\mSigma_{\sB\sB}}\mSigma_{\sB\sA}
+        \end{aligned}$ \\
+        Observe that the variance can only shrink.
+    \end{framed}
+    \columnbreak
+    \item Additive and closed under affine transformations.
+    \begin{framed}
+        \begin{itemize}
+            \item \scalebox{0.9}{$M \cdot \N{\vmu}{\mSigma} = \N{M \mu}{\transpose M \mSigma M}$}
+            \item \scalebox{0.9}{$\N{\vmu_A}{\mSigma_A} + \N{\vmu_B}{\mSigma_B} = \N{\vmu_A + \vmu_B}{\mSigma_A + \mSigma_B}$}
+            \item \scalebox{0.9}{$\N{\vmu_A}{\mSigma_A} \cdot \N{\vmu_B}{\mSigma_B} \propto \N{\cdot}{\cdot}$}
+        \end{itemize}
+    \end{framed}
+    
 \end{itemize}
 
 \vspace{0.5mm}\hrule\vspace{0.5mm}
@@ -124,25 +123,26 @@
 \scalebox{0.9}{$\vthetahat_\MLE \defeq \underset{\vtheta \in \Theta}{\argmax} p(y_{1:n} \mid \vx_{1:n}, \vtheta) = \underset{\vtheta \in \Theta}{\argmax} \sum_{i=1}^n \log p(y_i \mid \vx_i, \vtheta)$}
 \begin{itemize}
     \item \textbf{Consistent} if: $\vthetahat_\MLE \convp \opt{\vtheta}$ as $n \to \infty$.
-    \item \textbf{Asymptotically normal} if $\vthetahat_\MLE \convd \N{\opt{\vtheta}}{\mS_n}$ as $n \to \infty$ where $\mathbf S_n$ is the asymptotic covariance of MLE.
+    \item \textbf{Asymptotically normal} if $\vthetahat_\MLE \convd \N{\opt{\vtheta}}{\mS_n}$ as $n \to \infty$ where $\mS_n$ is the asymptotic covariance of MLE.
     \item MLE is \textbf{asymptotically efficient} (there exists no other consistent estimator with a “smaller” asymptotic var.).
-    \item For the finite sample regime the MLE need not be unbiased, and it is susceptible to overfitting to the (finite) training data.
+    \item For the finite sample regime, the MLE need not be unbiased, and it is susceptible to overfitting to the (finite) training data.
 \end{itemize}
 
 \vspace{0.5mm}\hrule\vspace{0.5mm}
 
 \textbf{Maximum a posterior (MAP) estimate}:\\
+\scalebox{0.9}{
 $\begin{aligned}[t]
-\vthetahat_\MAP &\defeq \argmax_{\vtheta \in \Theta} p(\vtheta \mid \vx_{1:n}, y_{1:n}) \\
+\vthetahat_\MAP &\defeq \argmax_{\vtheta \in \Theta} p(\vtheta \mid \vx_{1:n}, y_{1:n}) \\[-1.5ex]
 &= \argmin_{\vtheta \in \Theta} \underbrace{- \log p(\vtheta)}_{\text{regularization}} + \underbrace{\ell_\mathrm{nll}(\vtheta; \spD_n)}_{\text{quality of fit}}
-\end{aligned}$\\
-The \textbf{log-prior} $\log p(\vtheta)$ acts as a regularize. Common:
+\end{aligned}$}\\
+The \textbf{log-prior} $\log p(\vtheta)$ acts as a regularizer. Common:
 \begin{itemize}
     \item $p(\vtheta) = \N[\vtheta]{\vzero}{\lambda \mI}$ gives $-\log p(\vtheta) = \frac{\lambda}{2} \norm{\vtheta}_2^2 + \const$
     \item $p(\vtheta) = \Laplace[\vtheta]{\vzero}{\lambda}$ gives $-\log p(\vtheta) = \lambda \norm{\vtheta}_1 + \const$
-    \item  Uniform prior gives $\const$ (no regularization, MAP is equivalent to the MLE)
+    \item Uniform prior gives $\const$ (no regularization, MAP is equivalent to the MLE)
 \end{itemize}
 
-\begin{framed}
-     \textbf{Expected calibration error}: For $m$ bins: $\ell_{\mathrm{ECE}} \defeq \sum_{m=1}^M \frac{\card{\sB_m}}{n} \abs{\mathrm{freq}(\sB_m) - \mathrm{conf}(\sB_m)}$
-\end{framed}
+% \begin{framed}
+%      \textbf{Expected calibration error}: For $m$ bins: $\ell_{\mathrm{ECE}} \defeq \sum_{m=1}^M \frac{\card{\sB_m}}{n} \abs{\mathrm{freq}(\sB_m) - \mathrm{conf}(\sB_m)}$
+% \end{framed}

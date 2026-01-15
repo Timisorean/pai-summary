@@ -15,7 +15,7 @@ With probability at least $1-\delta$, $R_\mathrm{max}$ reaches an $\epsilon$-opt
 \includegraphics[width=0.95\linewidth,trim={0 0 4cm 0}]{images/TD_learning.png}
 This is an on-policy method.
 \includegraphics[width=0.95\linewidth, trim={0 0 3cm 0}]{images/Q_learning.png}
-The Monte Carlo approximation does not depend on the policy $\rightarrow$ algorithm is off-policy. The update rule can also be expressed as: $\Q*{x}{a} \gets \Q*{x}{a} + \alpha_t\parentheses*{r + \gamma \max_{a' \in \sA} \Q*{x'}{a'} - \Q*{x}{a}}$.
+The Monte Carlo approximation does not depend on the policy $\rightarrow$ algorithm is off-policy. The update rule can also be expressed as: $\Q*{x}{a} \gets \Q*{x}{a} + \alpha_t\parentheses{r + \gamma \max_{a' \in \sA} \Q*{x'}{a'} - \Q*{x}{a}}$.
 \begin{framed}
     \textbf{RM conditions}: $\alpha_t \geq 0$, $\sum_{t=0}^{\infty}{\alpha_t} = \infty$, $\sum_{t=0}^{\infty}{\alpha_t^2} < \infty$.
 \end{framed}

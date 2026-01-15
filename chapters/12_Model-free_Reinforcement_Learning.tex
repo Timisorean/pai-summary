@@ -1,5 +1,5 @@
 \section{Model-free Reinforcement Learning}
-Can view TD-learning as SGD on the squared loss $\ell(\vtheta; x, r, x') \defeq \frac{1}{2}\parentheses*{r + \gamma \old{\vtheta}(x') - \vtheta(x)}^2$. \\
+Can view TD-learning as SGD on the squared loss $\ell(\vtheta; x, r, x') \defeq \frac{1}{2}\parentheses{r + \gamma \old{\vtheta}(x') - \vtheta(x)}^2$. \\
 \textbf{Parametric value function approximation}: To scale to large state spaces, learn approximation
 of (action) value function $\V{\vx; \vtheta}$ or $\Q{\vx}{\va; \vtheta}$. For e.g. the parameters $\vtheta$ of a neural network.
 \begin{framed}
