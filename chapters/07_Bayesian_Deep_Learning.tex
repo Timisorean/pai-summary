@@ -3,9 +3,9 @@
 
 \textbf{Universal approx. theorem:} Any ANN with a single hidden layer (arbitrary width) and non-poly. activation fn. can approx. any cont. fn. to an arbitrary accuracy.
 
-\begin{framed}
-    \textbf{DNNs}: $\vf(\vx; \vtheta) \defeq \vvarphi(\mW_L \vvarphi(\mW_{L-1} ( \cdots \vvarphi(\mW_1 \vx))))$, where $\vtheta \defeq [\mW_1, \dots, \mW_L]$ are \textbf{weights}, and $\varphi : \R \to \R$ is a component-wise non-linear \textbf{activation fn.}.
-\end{framed}
+% \begin{framed}
+%     \textbf{DNNs}: $\vf(\vx; \vtheta) \defeq \vvarphi(\mW_L \vvarphi(\mW_{L-1} ( \cdots \vvarphi(\mW_1 \vx))))$, where $\vtheta \defeq [\mW_1, \dots, \mW_L]$ are \textbf{weights}, and $\varphi : \R \to \R$ is a component-wise non-linear \textbf{activation fn.}.
+% \end{framed}
 
 \begin{itemize}
     \item \textbf{Softmax}: $\sigma_i(\vf) \defeq \frac{\exp(f_i)}{\sum_{j=1}^c \exp(f_j)}$ (classification)\\[-0.5ex]
@@ -45,8 +45,7 @@ For linear regression, minimizing MSE/CE \textbf{corresponds to MLE} under a Gau
     \item Using Monte Carlo samples estimate mean and var.:\\
     \scalebox{0.8}{$\E{\ys \mid \vxs, \vx_{1:n}, \vy_{1:n}} \approx \frac1m \sum_{i=1}^m \mu(\vxs; \vtheta^{(i)})$}\\
     \scalebox{0.8}{$\begin{aligned}[t]
-        \Var{&\ys \mid \vxs, \vx_{1:n}, \vy_{1:n}}\\[-1ex]
-        &\approx \E[\vtheta]{\Var[\ys]{\ys \mid \vxs, \vtheta}} + \Var[\vtheta]{\E[\ys]{\ys \mid \vxs, \vtheta}}\\[-1ex]
+        \Var{&\ys \mid \vxs, \vx_{1:n}, \vy_{1:n}} \approx \E[\vtheta]{\Var[\ys]{\ys \mid \vxs, \vtheta}} + \Var[\vtheta]{\E[\ys]{\ys \mid \vxs, \vtheta}}\\[-1ex]
         &\approx \E[\vtheta]{\sigma^2(\vxs; \vtheta)} + \Var[\vtheta]{\mu(\vxs; \vtheta)}\\[-1ex]
         &\approx \underbrace{\frac1m \sum_{i=1}^m \sigma^2(\vxs; \vtheta^{(i)})}_\text{aleatoric} +  \underbrace{\frac1{m-1} \sum_{i=1}^m (\mu(\vxs; \vtheta^{*(i)}) - \bar\mu(\vxs))^2}_\text{epistemic}
     \end{aligned}

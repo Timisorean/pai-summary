@@ -1,8 +1,9 @@
+\vspace{0.5mm}\hrule\vspace{0.5mm}
 \section{Diffusion generative models}
 
-\begin{framed}
-    \textbf{MCs}: A seq. $(X_t)_{t \in \Nat_0} \in \sS$ with \scalebox{0.9}{$\sS \defeq \{0, \dots, n-1\}$}, s.t. the \textbf{Markov property}: \scalebox{0.9}{$X_{t+1} \perp X_{0:t-1} \mid X_t$} is satisfied. 
-\end{framed}
+% \begin{framed}
+%     \textbf{MCs}: A seq. $(X_t)_{t \in \Nat_0} \in \sS$ with \scalebox{0.9}{$\sS \defeq \{0, \dots, n-1\}$}, s.t. the \textbf{Markov property}: \scalebox{0.9}{$X_{t+1} \perp X_{0:t-1} \mid X_t$} is satisfied. 
+% \end{framed}
 
 Let $\beta_t \in (0,1]$, $\bar\alpha_t = \prod_{s=1}^t \alpha_s$, and $\alpha_s = 1 - \beta_s$. Typically, $\beta_t$ is monotonically increases, which implies that $\bar\alpha_t \rightarrow 0$ and thus $x_T \rightarrow \N{0}{\mI}$ for $T \rightarrow \infty$. 
 
@@ -12,7 +13,9 @@ Let $\beta_t \in (0,1]$, $\bar\alpha_t = \prod_{s=1}^t \alpha_s$, and $\alpha_s 
     $q(x_{t} \mid x_{t-1}) = \N[x_t]{\sqrt{1 - \beta_t}x_{t-1}}{\beta_t \mI}$\\
     $q(x_{t} \mid x_0) = \N[x_t]{\sqrt{\bar\alpha_t}x_{t-1}}{(\bar\alpha-1) \mI}$
     
-    \item \textbf{Backward process:} Learn a denoising MC $p$ matching the reversed forward process.\\
+    \columnbreak
+
+    \item \vspace*{-12pt}\textbf{Backward process:} Learn a denoising MC $p$ matching the reversed forward process.\\
     $p_\lambda(x_{t-1} \mid x_t) = \N[x_{t-1}]{\mu_\lambda(x_t, t)}{\mSigma_\lambda(x_t, t)}$\\
     $p_\lambda(x_{0:T}) = p_\lambda(x_T) \prod_{t=1}^T p_\lambda(x_{t-1} \mid x_t)$ \\
     $p_\lambda(x_0) = \int p_\lambda(x_{0:T}) \,d x_{1:T}$ where $x_{1:T}$ latent vars.
@@ -26,15 +29,15 @@ Let $\beta_t \in (0,1]$, $\bar\alpha_t = \prod_{s=1}^t \alpha_s$, and $\alpha_s 
 Note $p_\lambda(x_0)$ is intractable. Idea: use VI. ELBO:
 
 \scalebox{0.73}{$\begin{aligned}[t]
-&\log p_\lambda(x_0) \geq \log p_\lambda(x_0) - \spa{D}_{\mathrm{KL}}(q(\cdot \mid x_0) \| p_\lambda(\cdot \mid x_0)) \\[-1ex]
+&\log p_\lambda(x_0) \geq \log p_\lambda(x_0) - \spa{D}_{\mathrm{KL}}(q(\cdot \mid x_0) \| p_\lambda(\cdot \mid x_0))\\[-1.3ex]
 % &= \E[x_{1:T} \sim q(\cdot \mid x_0)]{\log p_\lambda(x_0) - \log \frac{q(x_{1:T} \mid x_0)}{p_\lambda(x_{1:T} \mid x_0)}} \\[-1ex]
 % &= \E[x_{1:T} \sim q(\cdot \mid x_0)]{\log p_\lambda(x_0) - \log \frac{q(x_{1:T} \mid x_0) p_\lambda(x_0)}{p_\lambda(x_{0:T})}} \\[-1ex]
 % &= \E[x_{1:T} \sim q(\cdot \mid x_0)]{\log p_\lambda(x_T) - \sum_{t=1}^T \log \frac{q(x_t \mid x_{t-1})}{p_\lambda(x_{t-1} \mid x_t)}} \\[-1ex]
-&= \E["]{\log p_\lambda(x_T) - \sum_{t=2}^T \log \frac{q(x_t \mid x_{t-1})}{p_\lambda(x_{t-1} \mid x_t)} - \log \frac{q(x_1 \mid x_0)}{p_\lambda(x_0 \mid x_1)}}\\[-1ex]
-&= \E["]{\log p_\lambda(x_T) - \sum_{t=2}^T \log \parentheses{\frac{q(x_{t-1} \mid x_t, x_0)}{p_\lambda(x_{t-1} \mid x_t)} \cdot \frac{q(x_t \mid x_0)}{q(x_{t-1} \mid x_0)}} - \log \frac{q(x_1 \mid x_0)}{p_\lambda(x_0 \mid x_1)}} \\[-2.5ex]
-&= \E["]{\log \frac{p_\lambda(x_T)}{q(x_T \mid x_0)} - \sum_{t=2}^T \log \frac{q(x_{t-1} \mid x_t, x_0)}{p_\lambda(x_{t-1} \mid x_t)} + \log p_\lambda(x_0 \mid x_1)} \\[-2ex]
+&= \E["]{\log p_\lambda(x_T) - \sum_{t=2}^T \log \frac{q(x_t \mid x_{t-1})}{p_\lambda(x_{t-1} \mid x_t)} - \log \frac{q(x_1 \mid x_0)}{p_\lambda(x_0 \mid x_1)}}\\[-3.3ex]
+% &= \E["]{\log p_\lambda(x_T) - \sum_{t=2}^T \log \parentheses{\frac{q(x_{t-1} \mid x_t, x_0)}{p_\lambda(x_{t-1} \mid x_t)} \cdot \frac{q(x_t \mid x_0)}{q(x_{t-1} \mid x_0)}} - \log \frac{q(x_1 \mid x_0)}{p_\lambda(x_0 \mid x_1)}} \\[-2.5ex]
+% &= \E["]{\log \frac{p_\lambda(x_T)}{q(x_T \mid x_0)} - \sum_{t=2}^T \log \frac{q(x_{t-1} \mid x_t, x_0)}{p_\lambda(x_{t-1} \mid x_t)} + \log p_\lambda(x_0 \mid x_1)} \\[-2ex]
 &= \const + \E["]{- \sum_{t=2}^T \underbrace{\spa{D}_{\mathrm{KL}}(q(\cdot \mid x_t, x_0) \| p_\lambda(\cdot \mid x_t))}_{L_t} + \underbrace{\log p_\lambda(x_0 \mid x_1)}_{L_1}}
-\end{aligned}$}
+\end{aligned}$}\\[-1ex]
 with \scalebox{0.73}{$" \defeq x_{1:T} \sim q(\cdot \mid x_0)$}. Now optimize this via \textbf{stochastic VI} using closed-form expression of this loss/the KL-divergence term with const. var. schedule:\\
 \scalebox{0.82}{$D_{\mathrm{KL}}(q(\cdot \mid x_t, x_0) \| p_\lambda(\cdot \mid x_t)) = \frac{1}{2\sigma_t^2} \norm{\mu_t'(x_t, x_0) - \mu_\lambda(x_t, t)}_2^2 + \const$}\\[-1ex]
 with $\mu_t'(x_t, x_0) = \frac{\sqrt{\mean{\alpha}_{t}} \beta_t}{1 - \mean{\alpha}_t} x_0 + \frac{\sqrt{\alpha_t}(1 - \mean{\alpha}_{t-1})}{(1 - \mean{\alpha}_t)} x_t$

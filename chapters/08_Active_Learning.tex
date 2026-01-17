@@ -18,12 +18,8 @@
     \vspace{0.5mm}\hrule\vspace{0.5mm}
     \textbf{Mutual info}: $\I{\rX}{\rY} \defeq \H{\rX} + \H{\rY} - \H{\rX, \rY}$
     \begin{itemize}
-        \item $\I{\rX}{\rY} = \I{\rY}{\rX}$
-        \item $\I{\rX}{\rY} = \E[\vy \sim p]{\KL{p(\vx \mid \vy)}{p(\vx)}}$
+        \item $\I{\rX}{\rY} = \I{\rY}{\rX} = \E[\vy \sim p]{\KL{p(\vx \mid \vy)}{p(\vx)}}$
     \end{itemize}
-\end{framed}
-
-\begin{framed}
     \textbf{Cond. mutual info}:
     \begin{itemize}
         \item $\begin{aligned}[t]
@@ -33,13 +29,12 @@
         \end{aligned}$
         \item $\I{\rX}{\rY \mid \rZ} = \I{\rY}{\rX \mid \rZ}$
         \item $\I{\rX}{\rY; \rZ} \defeq \I{\rX}{\rY} - \I{\rX}{\rY \mid \rZ}$, so the “information never hurts” principle does not hold for MI. Information about $Z$ may reduce the MI between $\rX$ and $\rY$ 
-        \item For Gaussian $\I{\rX}{\rY} = \frac12 \log \det{\mI + \sigma_n^{-2} \mSigma)}$
     \end{itemize}
 \end{framed}
 
 \begin{framed}
     \begin{itemize}
-        \item Given (discrete) fn. $F : \pset{\spX} \to \R$, the \textbf{marginal gain} of $\vx \in \spX$ given $\sA \subseteq \spX$ is: \scalebox{0.9}{$\Delta_F(\vx \mid \sA) \defeq F(\sA \cup \{\vx\}) - F(\sA)$}.
+        \item Given (discrete) fn. $F : \pset{\spX} \to \R$, the \textbf{marginal gain} of $\vx \in \spX$ given $\sA \subseteq \spX$ is: \scalebox{0.8}{$\Delta_F(\vx \mid \sA) \defeq F(\sA \cup \{\vx\}) - F(\sA)$}.
         \item The fn. is \textbf{submodular} iff for any $\vx \in \spX$ and any $\sA \subseteq \sB \subseteq \spX$: \scalebox{0.9}{$F(\sA \cup \{\vx\}) - F(\sA) \geq F(\sB \cup \{\vx\}) - F(\sB)$} or equally \scalebox{0.9}{$\Delta_F(\vx \mid \sA) \ge \Delta_F(\vx \mid \sB)$}. Submodularity can be interpreted as notion of “concavity” for discrete fns.
         \item It is called \textbf{monotone} if $F(\sA) \leq F(\sB)$.
     \end{itemize}

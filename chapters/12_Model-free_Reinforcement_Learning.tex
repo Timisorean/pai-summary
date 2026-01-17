@@ -1,21 +1,124 @@
+\vspace{0.5mm}\hrule\vspace{0.5mm}
 \section{Model-free Reinforcement Learning}
-Can view TD-learning as SGD on the squared loss $\ell(\vtheta; x, r, x') \defeq \frac{1}{2}\parentheses{r + \gamma \old{\vtheta}(x') - \vtheta(x)}^2$. \\
-\textbf{Parametric value function approximation}: To scale to large state spaces, learn approximation
-of (action) value function $\V{\vx; \vtheta}$ or $\Q{\vx}{\va; \vtheta}$. For e.g. the parameters $\vtheta$ of a neural network.
+
+In tabular methods:
+\begin{itemize}
+    \item Storing val. fn., we need at least $O(|\mathcal X|)$ space.
+    \item Storing Q-fn, we even need $O(|\mathcal X| \cdot |\mathcal A|)$ space.
+\end{itemize}
+
+Time req. to compute value fn. for every state-action pair exactly will grow poly. in size of the state-action space.
+
+\columnbreak
+
+\vspace*{-10pt}
+Can view TD-/Q-learning as SGD on the squared loss:\\[-0.5ex]
+$\ell(\vtheta; x, r, x') \defeq \frac{1}{2}\parentheses{r + \gamma \old{\vtheta}(x') - \vtheta(x)}^2$ 
+and learn param. approx. of $\V{\vx; \vtheta}$ or $\Q{\vx}{\va; \vtheta}$ using Monte Carlo est. and bootstrapping; main reason model-free methods (TD-/Q-learning) are usually \textbf{sample inefficient}:
+\begin{itemize}
+    \item Bootstrapping leads to “(initially) incorrect” and “unstable” targets of the optimization
+    \item Monte Carlo est. with single sample leads to large var.
+\end{itemize}
+
 \begin{framed}
-    \textbf{Q-learning with function approximation}: In state $\vx$, pick action $a$; Observe $\vx'$, reward $r$. Update $\vtheta \gets \vtheta + \alpha_t \delta_\mathrm{B} \vphi(\vx, \va)$, where $\delta_\mathrm{B} \defeq r + \gamma \max_{\vap \in \spA} \Q*{\vxp}{\vap; \old{\vtheta}} - \Q*{\vx}{\va; \vtheta}$.
+    \textbf{Q-learning with fn. approx.}: (1) Observe $\vx'$ and $r$ from picking $a$ in $\vx$. (2) Update $\vtheta \gets \vtheta + \alpha_t \delta_\mathrm{B} \vphi(\vx, \va)$, where \scalebox{0.9}{$\delta_\mathrm{B} \defeq r + \gamma \max_{\vap \in \spA} \Q*{\vxp}{\vap; \old{\vtheta}} - \Q*{\vx}{\va; \vtheta}$}.
 \end{framed}
+
+\begin{itemize}
+    \item In the tabular setting, this is identical to Q-learning 
+    \item Converges to the true Q-function $q^\star$.
+\end{itemize}
+
+\vspace{0.5mm}\hrule\vspace{0.5mm}
+
+"Tricks of the trade” to improve SGD:
+\begin{itemize}
+    \item \textbf{Stabilizing opti. targets:} Bootstrapping est. changes after each iteration, leading to stability issues. \textbf{DQN} updates NN used for bootstrapping infrequently and maintains const. opti. target across multiple episodes. E.g. clone: hanging/online NN and fixed/target NN.
+    
+    \item \textbf{Max. bias:} Estimates $Q^\star$ are noisy (biased) estimates of $q^\star$. \textbf{DDQN}: instead of picking optimal action w.r.t. old network, it picks w.r.t. new network:
+\end{itemize}
+
 \begin{framed}
-    Given a policy $\pi$, the \textbf{advantage function} is $\a[\pi]{\vx}{\va} \defeq \q[\pi]{\vx}{\va} - \v[\pi]{\vx} = \q[\pi]{\vx}{\va} - \E[\vap \sim \pi(\vx)]{\q[\pi]{\vx}{\vap}}$
+    \textbf{Policy val. fn.:} measures discounted payoff of policy:\\
+    $\J{\pi} \defeq \E[\pi]{G_0} = \E[\pi]{\sum_{t=0}^\infty \gamma^t R_t}$, and bounded ver.:\\
+    $\J{\pi}[T] \defeq \E[\pi]{G_{0:T}} = \E[\pi]{\sum_{t=0}^{T-1} \gamma^t R_t}$.
+    % Abbreviate $\j{\vvarphi} \defeq \j{\pi_\vvarphi}$
+    \hfill Non-convex.
 \end{framed}
-$\text{$\pi$ is optimal} \iff \forall \vx \in \spX, \va \in \spA : \a[\pi]{\vx}{\va} \leq 0$
+
 \begin{framed}
-    The \textbf{policy value function} measures the discounted payoff of policy $\pi$: $\j{\pi} \defeq \E[\pi]{G_0} = \E[\pi]{\sum_{t=0}^\infty \gamma^t R_t}$, and the bounded variant: $\j{\pi}[T] \defeq \E[\pi]{G_{0:T}} = \E[\pi]{\sum_{t=0}^{T-1} \gamma^t R_t}$. Abbreviate $\j{\vvarphi} \defeq \j{\pi_\vvarphi}$
+    \textbf{Score grad. est.:} \scalebox{0.84}{$\nabla_\vvarphi \E[\tau \sim \Pi_\vvarphi]{G_{0:T}} = \E{G_{0:T} \nabla_\vvarphi \log \Pi_\vvarphi(\tau)}$}\\[-0.5ex]
+    Typically var. of est. is very large. Reduce w. \textbf{baselines}:\\
+    $\E{G_{0:T} \nabla_\vvarphi \log \Pi_\vvarphi(\tau)} = \E{(G_{0:T} - b) \nabla_\vvarphi \log \Pi_\vvarphi(\tau)}$
 \end{framed}
+
+\vspace{0.5mm}\hrule\vspace{0.5mm}
+\includegraphics[width=0.8\linewidth,trim={0 1.5cm 0 0.8cm},clip]{images/REINFORCE.png}
+\begin{tikzpicture}[baseline, overlay]
+  \node[anchor=west, font=\fontsize{6pt}{6pt}\selectfont, anchor=base, xshift=-0.6cm, yshift=1.5cm, fill=yellow!10] at (0, 0) {
+    On-policy, Model-free
+  };
+\end{tikzpicture}
+
+\begin{itemize}
+    \item SGD with score grad est. and downstream returns.
+    \item Not guaranteed to find an optimal policy. Can get stuck in local optima even for very small domains.
+\end{itemize}
+
 \begin{framed}
-  \textbf{Actor-Critic methods} consist of two components: a parameterized policy, $\pi(\va \mid \vx; \vvarphi) \eqdef \pi_\vvarphi$, which is called \textbf{actor}; and a value function approximation, $\q[\pi_\vvarphi]{\vx}{\va} \approx \Q[\pi_\vvarphi]{\vx}{\va; \vtheta}$, which is called\textbf{critic}.
-  In the following, we will abbreviate $\fnQ[\pi_\vvarphi]$ by $\fnQ$.
+    \textbf{Advantage fn.}: $\begin{aligned}[t]
+        &\a[\pi]{\vx}{\va} \defeq \q[\pi]{\vx}{\va} - \v[\pi]{\vx}\\[-1ex]
+        &= \q[\pi]{\vx}{\va} - \E[\vap \sim \pi(\vx)]{\q[\pi]{\vx}{\vap}}\end{aligned}$
+    \begin{itemize}
+        \item $\text{$\pi$ is optimal} \iff \forall \vx \in \spX, \va \in \spA : \a[\pi]{\vx}{\va} \leq 0$
+    \end{itemize}
 \end{framed}
-Use gradient approximation: 
-\tiny{$\grad_\vvarphi \J{\vvarphi} \approx \sum_{t=0}^\infty\E[(\vx_t,\va_t) \sim \pi_\vvarphi]{\gamma^t \Q{\vx_t}{\va_t; \vtheta} \grad_\vvarphi \log \pi_\vvarphi(\va_t \mid \vx_t)}$}
-\includegraphics[width=0.95\linewidth, trim={0 0 4cm 0}, height=2.5cm]{Online_actor_critic.png}
+
+\begin{framed}
+    \textbf{Policy gradient theorem:} Max. $J(\vvarphi)$ corresponds to incr. the prob. of actions with large and decr. the prob. of actions with small value, taking into account how often the resulting policy visits certain states. \\
+    $\nabla_\vvarphi \J{\vvarphi} = \sum_{t=0}^\infty \E[\vx_t, \va_t]{\gamma^t q^{\pi_\vvarphi}(\vx_t, \va_t) \nabla_\vvarphi \pi_\vvarphi (\va_t, \vx_t)}$\\
+\end{framed}
+
+\begin{framed}
+  \textbf{AC} consist of: (1) \textbf{actor}: param. $\pi(\va \mid \vx; \vvarphi) \eqdef \pi_\vvarphi$; and (2) \textbf{critic}: approx. $\q[\pi_\vvarphi]{\vx}{\va} \approx \Q[\pi_\vvarphi]{\vx}{\va; \vtheta}$.
+\end{framed}
+
+% Use gradient approximation: \tiny{$\grad_\vvarphi \J{\vvarphi} \approx \sum_{t=0}^\infty\E[(\vx_t,\va_t) \sim \pi_\vvarphi]{\gamma^t \Q{\vx_t}{\va_t; \vtheta} \grad_\vvarphi \log \pi_\vvarphi(\va_t \mid \vx_t)}$}
+
+\vspace{0.5mm}\hrule\vspace{0.5mm}
+\includegraphics[width=0.8\linewidth,trim={0 0.8cm 1.5cm 0.6cm},clip]{images/Online_actor_critic.png}
+\begin{tikzpicture}[baseline, overlay]
+  \node[anchor=west, font=\fontsize{6pt}{6pt}\selectfont, anchor=base, xshift=-0.6cm, yshift=2.3cm, fill=yellow!10] at (0, 0) {
+    On-policy, Online, Model-free
+  };
+\end{tikzpicture}
+
+\begin{itemize}
+    \item Use SARSA for learning critic; SGD for gradient est.
+    \item Actor is not guaranteed to improve
+\end{itemize}
+
+\vspace{0.2mm}\hrule\vspace{0.2mm}
+
+{\fontsize{6}{6}\selectfont 
+    \scalebox{0.7}{\textbullet} \textbf{TRPO:} optimizes via KL-div. constraints for stable, mono-\\[-0.5ex]
+    tonic improv. Uses 2nd-order natural grad. to prevent per-\\[-0.5ex]
+    formance collapse. \hl{(on-policy, model-free, policy-gradient)}\\[-0.5ex]
+    \scalebox{0.7}{\textbullet} \textbf{PPO:} heuristic variants of TRPO; replace constrained opti.\\[-0.5ex]
+    prob. by unconstr. opti. of regularized objective \hl{(on-policy},\\[-0.5ex]
+    \hl{model-free, actor-critic)}
+    \scalebox{0.7}{\textbullet} \textbf{GRPO:} normalizes rewards across\\[-0.5ex]
+    group samples to eliminate the critic network and reduce\\[-0.5ex]
+    memory \hl{(on-policy,model-free, critic-less)}
+    \scalebox{0.7}{\textbullet} \textbf{DDPG:} uses det.\\[-0.5ex]
+    policy grad. and experience replay for cont. action spaces.\\[-0.5ex]
+    Combines Q-lean. stability with AC arch. \hl{(off-policy, model-}\\[-0.5ex]
+    \hl{free, deterministic)}
+    \scalebox{0.7}{\textbullet} \textbf{SAC:} Max. reward plus policy\\[-0.5ex]
+    entropy to ensure robust exploration and stability. Prevents\\[-0.5ex]
+    premature convergence in complex continuous control tasks\\[-0.5ex]
+    \hl{(off-policy, model-free, stochastic)}
+    \scalebox{0.7}{\textbullet} \textbf{DPO:} Maps RLHF\\[-0.5ex]
+    objectives directly to a cross-entropy loss without explicit\\[-0.5ex]
+    reward modeling or RL loops. \hl{(offline, model-free, ref.-based)}
+}
