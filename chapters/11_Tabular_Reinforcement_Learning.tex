@@ -30,12 +30,14 @@ Markovian property of the underlying MDP: \scalebox{0.8}{$X_{t=1} \bot X_{t'+1} 
     \textbf{Greedy in the limit with inf. exploration (GLIE)}:
     \begin{enumerate}
         \item All state-action pairs are explored infinitely many times: $\lim_{t \rightarrow \infty} N_t(x, a) = \infty$
-        \item The policy converges to a greedy policy: $\lim_{t \rightarrow \infty} \pi_t(a \mid x) = \mathbf 1\{a = \argmax_{a' \in A} Q_t^\star(x, a')\}$
+        \item The policy converges to a greedy policy:\\[-0.5ex]
+        $\lim_{t \rightarrow \infty} \pi_t(a \mid x) = \mathbf 1\{a = \argmax_{a' \in A} Q_t^\star(x, a')\}$
     \end{enumerate}
 \end{framed}
 
 \begin{framed}
-    \textbf{Robbins-Montro (RM) conditions}: for a sequence $(\alpha)_{t \in \mathbb N_0}$ if: $\alpha_t \geq 0$, $\sum_{t=0}^{\infty}{\alpha_t} = \infty$, $\sum_{t=0}^{\infty}{\alpha_t^2} < \infty$.
+    \textbf{Robbins-Montro (RM) conditions}: for a sequence\\[-0.5ex]
+    $(\alpha)_{t \in \mathbb N_0}$ if: $\alpha_t \geq 0$, $\sum_{t=0}^{\infty}{\alpha_t} = \infty$, $\sum_{t=0}^{\infty}{\alpha_t^2} < \infty$.
 \end{framed}
 
 \vspace{0.5mm}\hrule\vspace{0.5mm}

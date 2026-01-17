@@ -14,7 +14,7 @@ Time req. to compute value fn. for every state-action pair exactly will grow pol
 \vspace*{-10pt}
 Can view TD-/Q-learning as SGD on the squared loss:\\[-0.5ex]
 $\ell(\vtheta; x, r, x') \defeq \frac{1}{2}\parentheses{r + \gamma \old{\vtheta}(x') - \vtheta(x)}^2$ 
-and learn param. approx. of $\V{\vx; \vtheta}$ or $\Q{\vx}{\va; \vtheta}$ using Monte Carlo est. and bootstrapping; main reason model-free methods (TD-/Q-learning) are usually \textbf{sample inefficient}:
+and learn param. approx. of $\V{\vx; \vtheta}$ or $\Q{\vx}{\va; \vtheta}$ using Monte Carlo est. and bootstrapping; Main reason model-free methods (TD-/Q-learning) are usually \textbf{sample inefficient}:
 \begin{itemize}
     \item Bootstrapping leads to “(initially) incorrect” and “unstable” targets of the optimization
     \item Monte Carlo est. with single sample leads to large var.
@@ -79,24 +79,28 @@ and learn param. approx. of $\V{\vx; \vtheta}$ or $\Q{\vx}{\va; \vtheta}$ using 
     $\nabla_\vvarphi \J{\vvarphi} = \sum_{t=0}^\infty \E[\vx_t, \va_t]{\gamma^t q^{\pi_\vvarphi}(\vx_t, \va_t) \nabla_\vvarphi \pi_\vvarphi (\va_t, \vx_t)}$\\
 \end{framed}
 
-\begin{framed}
-  \textbf{AC} consist of: (1) \textbf{actor}: param. $\pi(\va \mid \vx; \vvarphi) \eqdef \pi_\vvarphi$; and (2) \textbf{critic}: approx. $\q[\pi_\vvarphi]{\vx}{\va} \approx \Q[\pi_\vvarphi]{\vx}{\va; \vtheta}$.
-\end{framed}
+% \begin{framed}
+%   \textbf{AC} consist of: (1) \textbf{actor}: param. $\pi(\va \mid \vx; \vvarphi) \eqdef \pi_\vvarphi$; and (2) \textbf{critic}: approx. $\q[\pi_\vvarphi]{\vx}{\va} \approx \Q[\pi_\vvarphi]{\vx}{\va; \vtheta}$.
+% \end{framed}
 
 % Use gradient approximation: \tiny{$\grad_\vvarphi \J{\vvarphi} \approx \sum_{t=0}^\infty\E[(\vx_t,\va_t) \sim \pi_\vvarphi]{\gamma^t \Q{\vx_t}{\va_t; \vtheta} \grad_\vvarphi \log \pi_\vvarphi(\va_t \mid \vx_t)}$}
 
 \vspace{0.5mm}\hrule\vspace{0.5mm}
-\includegraphics[width=0.8\linewidth,trim={0 0.8cm 1.5cm 0.6cm},clip]{images/Online_actor_critic.png}
+\includegraphics[width=0.7\linewidth,trim={0 0.8cm 1.5cm 0.6cm},clip]{images/Online_actor_critic.png}
 \begin{tikzpicture}[baseline, overlay]
-  \node[anchor=west, font=\fontsize{6pt}{6pt}\selectfont, anchor=base, xshift=-0.6cm, yshift=2.3cm, fill=yellow!10] at (0, 0) {
+  \node[anchor=west, font=\fontsize{6pt}{6pt}\selectfont, anchor=base, xshift=-0.6cm, yshift=2cm, fill=yellow!10] at (0, 0) {
     On-policy, Online, Model-free
   };
 \end{tikzpicture}
 
-\begin{itemize}
-    \item Use SARSA for learning critic; SGD for gradient est.
-    \item Actor is not guaranteed to improve
-\end{itemize}
+\vspace{-1.7cm}
+\begin{list}{}{
+    \leftmargin=3.6cm
+    \rightmargin=0cm
+}
+    \item \scalebox{0.7}{\textbullet} Use SARSA for learning critic; SGD for gradient est.
+    \item \scalebox{0.7}{\textbullet} Actor is not guaranteed to improve
+\end{list}
 
 \vspace{0.2mm}\hrule\vspace{0.2mm}
 
@@ -120,5 +124,13 @@ and learn param. approx. of $\V{\vx; \vtheta}$ or $\Q{\vx}{\va; \vtheta}$ using 
     \hl{(off-policy, model-free, stochastic)}
     \scalebox{0.7}{\textbullet} \textbf{DPO:} Maps RLHF\\[-0.5ex]
     objectives directly to a cross-entropy loss without explicit\\[-0.5ex]
-    reward modeling or RL loops. \hl{(offline, model-free, ref.-based)}
+    reward modeling or RL loops. \hl{(offline, model-free, ref.-based)}\\[-0.5ex]
+    \scalebox{0.7}{\textbullet} \textbf{PETS:} combines probabilistic ensembles to capture un-\\[-0.5ex]
+    certainty with MPC for planning. \hl{(model-based, stochastic, }\\[-0.5ex]
+    \hl{MPC)}
+    \scalebox{0.7}{\textbullet} \textbf{UCRL:} implements optimistic exploration via\\[-0.5ex]
+    plausible models to min. regret. \hl{(model-based, exploration,}\\[-0.5ex]
+    \hl{opt. i.t.f.o. uc)}
+    \scalebox{0.7}{\textbullet} \textbf{H-UCRL:} extends UCRL to hierarchical\\[-0.5ex]
+    structures to manage exploration. \hl{(model-based, opt. i.t.f.o. uc)}
 }
