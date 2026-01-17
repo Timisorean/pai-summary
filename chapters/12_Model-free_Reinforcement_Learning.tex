@@ -1,20 +1,15 @@
-\vspace{0.5mm}\hrule\vspace{0.5mm}
+\vspace{0.2mm}\hrule\vspace{0.2mm}
 \section{Model-free Reinforcement Learning}
 
-In tabular methods:
-\begin{itemize}
-    \item Storing val. fn., we need at least $O(|\mathcal X|)$ space.
-    \item Storing Q-fn, we even need $O(|\mathcal X| \cdot |\mathcal A|)$ space.
-\end{itemize}
-
-Time req. to compute value fn. for every state-action pair exactly will grow poly. in size of the state-action space.
+In tab. methods: Storing val. fn., need at least $O(|\mathcal X|)$ space. Storing Q-fn, even need $O(|\mathcal X| \cdot |\mathcal A|)$ space.\\
+Time req. to compute value fn. for every state-action pair exactly grows poly. in size of state-action space.\\
+Can view TD-/Q-learning as SGD on the squared loss:\\[-0.5ex]
+$\ell(\vtheta; x, r, x') \defeq \frac{1}{2}\parentheses{r + \gamma \old{\vtheta}(x') - \vtheta(x)}^2$ 
+and learn param. approx. of $\V{\vx; \vtheta}$ or $\Q{\vx}{\va; \vtheta}$ using Monte Carlo est. and bootstrapping.
 
 \columnbreak
 
-\vspace*{-10pt}
-Can view TD-/Q-learning as SGD on the squared loss:\\[-0.5ex]
-$\ell(\vtheta; x, r, x') \defeq \frac{1}{2}\parentheses{r + \gamma \old{\vtheta}(x') - \vtheta(x)}^2$ 
-and learn param. approx. of $\V{\vx; \vtheta}$ or $\Q{\vx}{\va; \vtheta}$ using Monte Carlo est. and bootstrapping; Main reason model-free methods (TD-/Q-learning) are usually \textbf{sample inefficient}:
+Model-free (TD-/Q-learn.) are usually \textbf{sample ineff.}:
 \begin{itemize}
     \item Bootstrapping leads to “(initially) incorrect” and “unstable” targets of the optimization
     \item Monte Carlo est. with single sample leads to large var.
@@ -29,7 +24,7 @@ and learn param. approx. of $\V{\vx; \vtheta}$ or $\Q{\vx}{\va; \vtheta}$ using 
     \item Converges to the true Q-function $q^\star$.
 \end{itemize}
 
-\vspace{0.5mm}\hrule\vspace{0.5mm}
+\vspace{0.2mm}\hrule\vspace{0.2mm}
 
 "Tricks of the trade” to improve SGD:
 \begin{itemize}
@@ -52,7 +47,7 @@ and learn param. approx. of $\V{\vx; \vtheta}$ or $\Q{\vx}{\va; \vtheta}$ using 
     $\E{G_{0:T} \nabla_\vvarphi \log \Pi_\vvarphi(\tau)} = \E{(G_{0:T} - b) \nabla_\vvarphi \log \Pi_\vvarphi(\tau)}$
 \end{framed}
 
-\vspace{0.5mm}\hrule\vspace{0.5mm}
+\vspace{0.2mm}\hrule\vspace{0.2mm}
 \includegraphics[width=0.8\linewidth,trim={0 1.5cm 0 0.8cm},clip]{images/REINFORCE.png}
 \begin{tikzpicture}[baseline, overlay]
   \node[anchor=west, font=\fontsize{6pt}{6pt}\selectfont, anchor=base, xshift=-0.6cm, yshift=1.5cm, fill=yellow!10] at (0, 0) {
@@ -85,52 +80,33 @@ and learn param. approx. of $\V{\vx; \vtheta}$ or $\Q{\vx}{\va; \vtheta}$ using 
 
 % Use gradient approximation: \tiny{$\grad_\vvarphi \J{\vvarphi} \approx \sum_{t=0}^\infty\E[(\vx_t,\va_t) \sim \pi_\vvarphi]{\gamma^t \Q{\vx_t}{\va_t; \vtheta} \grad_\vvarphi \log \pi_\vvarphi(\va_t \mid \vx_t)}$}
 
-\vspace{0.5mm}\hrule\vspace{0.5mm}
-\includegraphics[width=0.7\linewidth,trim={0 0.8cm 1.5cm 0.6cm},clip]{images/Online_actor_critic.png}
+\vspace{0.2mm}\hrule\vspace{0.2mm}
+\includegraphics[width=0.7\linewidth,trim={0 0.9cm 1.5cm 0.6cm},clip]{images/Online_actor_critic.png}
 \begin{tikzpicture}[baseline, overlay]
-  \node[anchor=west, font=\fontsize{6pt}{6pt}\selectfont, anchor=base, xshift=-0.6cm, yshift=2cm, fill=yellow!10] at (0, 0) {
+  \node[anchor=west, font=\fontsize{6pt}{6pt}\selectfont, anchor=base, xshift=-0.4cm, yshift=2cm, fill=yellow!10] at (0, 0) {
     On-policy, Online, Model-free
   };
 \end{tikzpicture}
 
 \vspace{-1.7cm}
 \begin{list}{}{
-    \leftmargin=3.6cm
+    \leftmargin=3cm
     \rightmargin=0cm
 }
     \item \scalebox{0.7}{\textbullet} Use SARSA for learning critic; SGD for gradient est.
     \item \scalebox{0.7}{\textbullet} Actor is not guaranteed to improve
 \end{list}
 
-\vspace{0.2mm}\hrule\vspace{0.2mm}
+\hrule\vspace{0.2mm}
 
-{\fontsize{6}{6}\selectfont 
-    \scalebox{0.7}{\textbullet} \textbf{TRPO:} optimizes via KL-div. constraints for stable, mono-\\[-0.5ex]
-    tonic improv. Uses 2nd-order natural grad. to prevent per-\\[-0.5ex]
-    formance collapse. \hl{(on-policy, model-free, policy-gradient)}\\[-0.5ex]
-    \scalebox{0.7}{\textbullet} \textbf{PPO:} heuristic variants of TRPO; replace constrained opti.\\[-0.5ex]
-    prob. by unconstr. opti. of regularized objective \hl{(on-policy},\\[-0.5ex]
-    \hl{model-free, actor-critic)}
-    \scalebox{0.7}{\textbullet} \textbf{GRPO:} normalizes rewards across\\[-0.5ex]
-    group samples to eliminate the critic network and reduce\\[-0.5ex]
-    memory \hl{(on-policy,model-free, critic-less)}
-    \scalebox{0.7}{\textbullet} \textbf{DDPG:} uses det.\\[-0.5ex]
-    policy grad. and experience replay for cont. action spaces.\\[-0.5ex]
-    Combines Q-lean. stability with AC arch. \hl{(off-policy, model-}\\[-0.5ex]
-    \hl{free, deterministic)}
-    \scalebox{0.7}{\textbullet} \textbf{SAC:} Max. reward plus policy\\[-0.5ex]
-    entropy to ensure robust exploration and stability. Prevents\\[-0.5ex]
-    premature convergence in complex continuous control tasks\\[-0.5ex]
-    \hl{(off-policy, model-free, stochastic)}
-    \scalebox{0.7}{\textbullet} \textbf{DPO:} Maps RLHF\\[-0.5ex]
-    objectives directly to a cross-entropy loss without explicit\\[-0.5ex]
-    reward modeling or RL loops. \hl{(offline, model-free, ref.-based)}\\[-0.5ex]
-    \scalebox{0.7}{\textbullet} \textbf{PETS:} combines probabilistic ensembles to capture un-\\[-0.5ex]
-    certainty with MPC for planning. \hl{(model-based, stochastic, }\\[-0.5ex]
-    \hl{MPC)}
-    \scalebox{0.7}{\textbullet} \textbf{UCRL:} implements optimistic exploration via\\[-0.5ex]
-    plausible models to min. regret. \hl{(model-based, exploration,}\\[-0.5ex]
-    \hl{opt. i.t.f.o. uc)}
-    \scalebox{0.7}{\textbullet} \textbf{H-UCRL:} extends UCRL to hierarchical\\[-0.5ex]
-    structures to manage exploration. \hl{(model-based, opt. i.t.f.o. uc)}
-}
+{\hyphenpenalty=0 \exhyphenpenalty=0
+\scalebox{0.7}{\textbullet}~\textbf{TRPO:} KL-constraint forces monotonic improvement via trust regions \hl{(on-pol., m-free, pol.-gradient)}
+\scalebox{0.7}{\textbullet}~\textbf{PPO:} Clipped obj. stabilizes training by limiting update size \hl{(on-pol., m-free, AC)}
+\scalebox{0.7}{\textbullet}~\textbf{GRPO:} Group-relative advantages remove need for separate critic \hl{(on-pol., m-free, critic-less)}
+\scalebox{0.7}{\textbullet} \textbf{DDPG:} Det. grads. enable cont. control with target networks \hl{(off-pol., m-free, AC)}
+\scalebox{0.7}{\textbullet}~\textbf{SAC:} Max. entropy obj. balances exploration and performance \hl{(off-pol., m-free)}
+\scalebox{0.7}{\textbullet}~\textbf{DPO:} Bypasses explicit reward modeling \hl{(offline, m-free, ref.-based)}
+\scalebox{0.7}{\textbullet}~\textbf{PETS:} Ensembles plus MPC handle uncertainty in planning. \hl{(m-based)}
+\scalebox{0.7}{\textbullet}~\textbf{UCRL:} selects optimistic MDPs for efficient exploration \hl{(m-based, exploration, o.i.t.f.o.uc)}
+\scalebox{0.7}{\textbullet}~\textbf{H-UCRL:} hallucinated transitions ensure safe, robust exploration. \hl{(m-based, opt. o.i.t.f.o.uc, hierarchical)}
+\par}

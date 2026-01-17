@@ -1,4 +1,4 @@
-\vspace{0.5mm}\hrule\vspace{0.5mm}
+\vspace{0.2mm}\hrule\vspace{0.2mm}
 \section{Tabular Reinforcement Learning}
 
 % Trajectory $\tau$: \scalebox{0.9}{$\tau \defeq (\tau_0, \tau_1, \dots)$}, with \scalebox{0.9}{$\tau_i \defeq (x_i, a_i, r_i, x_{i+1})$}.
@@ -14,6 +14,11 @@ Markovian property of the underlying MDP: \scalebox{0.8}{$X_{t=1} \bot X_{t'+1} 
 
 \begin{framed}
     \textbf{Bootstrapping:} approx. a true quantity by using an empirical quantity, which itself is constructed using samples from the true quantity that is to be approx. 
+\end{framed}
+
+\begin{framed}
+    \textbf{Robbins-Montro (RM) conditions}: for a sequence\\[-0.5ex]
+    $(\alpha)_{t \in \mathbb N_0}$ if: $\alpha_t \geq 0$, $\sum_{t=0}^{\infty}{\alpha_t} = \infty$, $\sum_{t=0}^{\infty}{\alpha_t^2} < \infty$.
 \end{framed}
 
 \begin{framed}
@@ -35,26 +40,17 @@ Markovian property of the underlying MDP: \scalebox{0.8}{$X_{t=1} \bot X_{t'+1} 
     \end{enumerate}
 \end{framed}
 
-\begin{framed}
-    \textbf{Robbins-Montro (RM) conditions}: for a sequence\\[-0.5ex]
-    $(\alpha)_{t \in \mathbb N_0}$ if: $\alpha_t \geq 0$, $\sum_{t=0}^{\infty}{\alpha_t} = \infty$, $\sum_{t=0}^{\infty}{\alpha_t^2} < \infty$.
-\end{framed}
+\vspace{0.2mm}\hrule\vspace{0.2mm}
 
-\vspace{0.5mm}\hrule\vspace{0.5mm}
+% \includegraphics[width=0.95\linewidth,trim={0 0.5cm 0 0.7cm},clip]{images/epsilon_greedy.png}
 
-\includegraphics[width=0.95\linewidth,trim={0 0.5cm 0 0.7cm},clip]{images/epsilon_greedy.png}
+\textbf{$\epsilon$-greedy:} \scalebox{0.7}{\textbullet} Ignores all past experience. \scalebox{0.7}{\textbullet} Will eventually converge. \scalebox{0.7}{\textbullet} Will eventually converge. GLIE with prob. 1 if $(\epsilon_t)_{t \in \mathbb N_0}$ satisfies the RM conditions (e.g., $\epsilon_t = \sfrac1t$).
 
-\begin{itemize}
-    \item Ignores all past experience. \scalebox{0.7}{\textbullet} Will eventually converge.
-    \item $\epsilon$-greedy is GLIE with prob. 1 if $(\epsilon_t)_{t \in \mathbb N_0}$ satisfies the\\[-0.5ex]
-    \textbf{Robbins-Montro (RM)} conditions (e.g., $\epsilon_t = \sfrac1t$).
-\end{itemize}
+\vspace{0.2mm}\hrule\vspace{0.2mm}
 
-\vspace{0.5mm}\hrule\vspace{0.5mm}
+\textbf{Softmax/Boltzmann exploration:} alt. to $\epsilon$-greedy $\pi_\lambda(a \mid x) \propto \exp(\frac1\lambda Q^\star(x, a))$ (Gibbs). For \scalebox{0.9}{$\lambda \rightarrow 0$} greedily max. Q-fn. For \scalebox{0.9}{$\lambda \rightarrow \infty$} uniform rand. exploration.
 
-\textbf{Softmax/Boltzmann exploration:} alt. to $\epsilon$-greedy $\pi_\lambda(a \mid x) \propto \exp(\frac1\lambda Q^\star(x, a))$ (Gibbs). For $\lambda \rightarrow 0$ greedily max. Q-fn. For $\lambda \rightarrow \infty$ uniform random exploration.
-
-\vspace{0.5mm}\hrule\vspace{0.5mm}
+\vspace{0.2mm}\hrule\vspace{0.2mm}
 
 \includegraphics[width=0.92\linewidth,trim={0 0.6cm 0 0.7cm},clip]{images/R_max.png}
 \begin{tikzpicture}[baseline, overlay]
@@ -64,12 +60,12 @@ Markovian property of the underlying MDP: \scalebox{0.8}{$X_{t=1} \bot X_{t'+1} 
 \end{tikzpicture}
 
 \begin{itemize}
-    \item Optimism in the face of uncertainty. Init. with max rew.
-    \item Every $T$ steps, with high prob., either obtains near-\\optimal reward; or visits one unknown state-action pair.
-    \item With prob. at least $1-\delta$, $R_\mathrm{max}$ reaches $\epsilon$-optimal $\pi$ in poly. num. steps in $\card{\sX}$, $\card{\sA}$, $T$, $\nicefrac{1}{\epsilon}$, $\nicefrac{1}{\delta}$, and $R_\mathrm{max}$.
+    \item Optimism in the face of uc. Init. with max reward.
+    \item Every $T$ steps, with high prob., either obtains near-\\optimal rew.; or visits one unknown state-action pair.
+    \item With prob. at least $1-\delta$, $R_\mathrm{max}$ reaches $\epsilon$-optimal $\pi$ in poly. num. steps $\card{\sX}$, $\card{\sA}$, $T$, $\nicefrac{1}{\epsilon}$, $\nicefrac{1}{\delta}$, and $R_\mathrm{max}$.
 \end{itemize}
 
-\vspace{0.5mm}\hrule\vspace{0.5mm}
+\vspace{0.2mm}\hrule\vspace{0.2mm}
 
 \includegraphics[width=0.85\linewidth,trim={0 1.2cm 0 0.8cm},clip]{images/TD_learning.png}
 \begin{tikzpicture}[baseline, overlay]
@@ -83,7 +79,7 @@ Markovian property of the underlying MDP: \scalebox{0.8}{$X_{t=1} \bot X_{t'+1} 
     \item For estimates $V^\pi$ to converge true $v^\pi$, the transitions that are used for the estimation must follow policy $\pi$.
 \end{itemize}
 
-\vspace{0.5mm}\hrule\vspace{0.5mm}
+\vspace{0.2mm}\hrule\vspace{0.2mm}
 
 \textbf{SARSA:} Same as TD but estimate $Q$ with update: $Q^\pi(x, a) \leftarrow (1-\alpha_t) Q^\pi(x, a) + \alpha_t (r + \gamma Q^\pi(x', a'))$
 Same convergence guarantees as TD.
@@ -93,7 +89,7 @@ Same convergence guarantees as TD.
   };
 \end{tikzpicture}
 
-\vspace{0.5mm}\hrule\vspace{0.5mm}
+\vspace{0.2mm}\hrule\vspace{0.2mm}
 \includegraphics[width=0.95\linewidth,trim={0 2cm 0 0.8cm},clip]{images/Q_learning.png}
 \begin{tikzpicture}[baseline, overlay]
   \node[anchor=west, font=\fontsize{6pt}{6pt}\selectfont, anchor=base, xshift=-0.9cm, yshift=0.6cm, fill=yellow!10] at (0, 0) {
@@ -102,15 +98,10 @@ Same convergence guarantees as TD.
 \end{tikzpicture}
 
 \begin{itemize}
-    \item If $\alpha_t$ satisfies RM conditions and all state-action pair are visited inf. often, then $Q^\star$ conv. to $q^\star$ with prob. 1.
-    \item With prob. at least $1 - \delta$, conv. to $\epsilon$-optimal policy in num. steps that is poly. in $\log |X|$, $\log |A|$, $\frac 1 \epsilon$ and $\log \frac1\delta$.
+    \item If $\alpha_t$ satisfies RM cond. and all state-action pair are visited inf. often, then $Q^\star$ conv. to $q^\star$ with prob. 1.
+    \item With prob. at least $1 - \delta$, conv. to $\epsilon$-optimal policy in num. steps poly. in $\log |X|$, $\log |A|$, $\frac 1 \epsilon$ and $\log \frac1\delta$.
 \end{itemize}
 
-\vspace{0.5mm}\hrule\vspace{0.5mm}
+\vspace{0.2mm}\hrule\vspace{0.2mm}
 
-\textbf{Optimistic Q-learning: Similar to $R_\text{max}$ Init.} \scalebox{0.8}{$Q^\star(x, a) = V_\text{max} \prod_{t=1}^{T_\text{init}} (1 - \alpha_t)^{-1}$} w. \scalebox{0.8}{$V_\text{max} \defeq \frac{R_\text{max}}{1 - \gamma} \ge \max q^\star(x, a)$}.
-
-\begin{itemize}
-    \item With prob. at least $1 - \delta$, $\epsilon$-optimal $\pi$ after num. steps that is poly. in $|X|$, $|A|$, $\frac1\epsilon$, $\log \frac1\delta$, and $R_\text{max}$ where init. time $T_\text{init}$ is upper bounded by a poly. in same coeff.
-    \item If $T_\text{init}$ chosen large enough, converges quickly to $\pi^\star$.
-\end{itemize}
+\textbf{Optimistic Q-learning:} Similar to $R_\text{max}$ Init. \scalebox{1}{$Q^\star(x, a) = V_\text{max} \prod_{t=1}^{T_\text{init}} (1 - \alpha_t)^{-1}$} w. \scalebox{1}{$V_\text{max} \defeq \frac{R_\text{max}}{1 - \gamma} \ge \max q^\star(x, a)$}. With prob. at least $1 - \delta$,\\[-0.8ex] $\epsilon$-optimal $\pi$ after num. steps poly. in $|X|$, $|A|$, $\frac1\epsilon$, $\log \frac1\delta$, and $R_\text{max}$ where $T_\text{init}$ is upper bounded by a poly. in same coeff. If $T_\text{init}$ large enough, conv. quickly to $\pi^\star$.

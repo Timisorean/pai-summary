@@ -1,4 +1,4 @@
-\vspace{0.5mm}\hrule\vspace{0.5mm}
+\vspace{0.2mm}\hrule\vspace{0.2mm}
 \section{Markov Decision Processes (MDPs)}
 
 % \begin{framed}
@@ -13,7 +13,7 @@
 
 \begin{itemize}
     \item A policy induces a MC $(X_t^\pi)_{t\in\Nat_0}$: $p^\pi(x' \mid x) \defeq \Pr{X_{t+1}^\pi = x' \mid X_t^\pi = x} = \sum_{a \in \sA} \pi(a \mid x) p(x' \mid x, a)$.
-    \item The \textbf{discounted payoff} from time $t$ is: $G_t \defeq \sum_{m=0}^\infty \gamma^m R_{t+m}$, for \textbf{discount factor} $\gamma \in [0, 1)$.
+    \item The \textbf{discounted payoff} from time $t$ is: $G_t \defeq \sum_{m=0}^\infty \gamma^m R_{t+m}$, for $\gamma \in [0, 1)$.
 \end{itemize}
 
 \begin{framed}
@@ -66,7 +66,7 @@ Monotonic improvement of PI:
     \item \scalebox{0.85}{$v^{\pi_{t+1}}(x) >v^{\pi_{t}}(x)$} for at least one $x \in X$, unless \scalebox{0.85}{$v^{\pi_t} \equiv v^\star$}
 \end{itemize}
 
-\vspace{0.5mm}\hrule\vspace{0.5mm}
+\vspace{0.2mm}\hrule\vspace{0.2mm}
 \includegraphics[width=0.8\linewidth,trim={0 0.6cm 0 0.8cm},clip]{images/Value_Iteration.png}
 \vspace{-3pt}
 

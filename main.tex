@@ -1,4 +1,4 @@
-\documentclass[10.5pt,landscape, a4paper, fleqn]{extarticle}
+\documentclass[11pt,landscape, a4paper, fleqn]{extarticle}
 \usepackage{multicol}
 \usepackage{calc}
 \usepackage{xspace}
@@ -36,12 +36,12 @@
 
 % \usepackage[extreme]{savetrees}
 \usepackage{setspace}
-\setstretch{0.8}
+\setstretch{0.7}
 
 % Reduce letter spacing
 \usepackage[
   tracking=true,
-  letterspace=-80,
+  letterspace=-100,
 ]{microtype}
 \UseMicrotypeSet[tracking]{alltext}
 
@@ -53,9 +53,9 @@
 \setlength{\mathindent}{0pt}  % Removes the left margin/indent for formulas
 
 % Reduce math spacing
-\thinmuskip=1mu
-\medmuskip=1mu
-\thickmuskip=1mu
+\thinmuskip=0.5mu
+\medmuskip=0.5mu
+\thickmuskip=0.5mu
 
 % Reduce list spacing
 \setlist[itemize]{
@@ -74,7 +74,7 @@
   align=left,
 }
 
-\geometry{a4paper, layouthoffset=0mm, margin=1mm, bottom=2mm}
+\geometry{a4paper, layouthoffset=0mm, margin=0.5mm, bottom=1mm}
 
 \input{commands}
 
@@ -113,9 +113,9 @@
 
 \raggedright
 \footnotesize
-\setlength{\columnseprule}{0.25pt}
-\setlength{\premulticols}{1pt}
-\setlength{\postmulticols}{1pt}
+\setlength{\columnseprule}{0.2pt}
+\setlength{\premulticols}{0.5pt}
+\setlength{\postmulticols}{0.5pt}
 \setlength{\multicolsep}{-1cm}
 \setlength{\columnsep}{1mm}
 \begin{multicols*}{5}
@@ -131,13 +131,13 @@
     colback=background_color!15!white,
     colframe=black,
     boxrule=0.3pt,
-    before skip=0.5mm,  % 2mm space before the box
-    after skip=0.5mm,   % 2mm space after the box
-    top=0.2mm,          % Tightens internal top space
-    bottom=0.2mm,       % Tightens internal bottom space
+    before skip=0.2mm,  % 2mm space before the box
+    after skip=0.2mm,   % 2mm space after the box
+    top=0.1mm,          % Tightens internal top space
+    bottom=0.1mm,       % Tightens internal bottom space
     boxsep=0mm,         % Removes the "buffer" zone around text
-    left=0.5mm,
-    right=0.5mm,
+    left=0mm,
+    right=0mm,
     arc=1mm,            % Adds the slight rounding seen in your image
 ]}
 {\end{tcolorbox}}
@@ -159,6 +159,7 @@
 % \input{chapters/13_Model-based_Reinforcement_Learning}
 
 \vspace{-3pt}
+\vfill\hfill
 \scalebox{0.6}{Adapted by Samuel Stante (HS2025) from Nils Jensen (HS2023)}
 
 \end{multicols*}

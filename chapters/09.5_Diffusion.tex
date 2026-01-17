@@ -1,4 +1,4 @@
-\vspace{0.5mm}\hrule\vspace{0.5mm}
+\vspace{0.2mm}\hrule\vspace{0.2mm}
 \section{Diffusion generative models}
 
 % \begin{framed}
@@ -12,23 +12,21 @@ Let $\beta_t \in (0,1]$, $\bar\alpha_t = \prod_{s=1}^t \alpha_s$, and $\alpha_s 
     $q(x_{1:T} \mid x_0) = \prod_{t=1}^T q(x_t \mid x_{t-1})$\\
     $q(x_{t} \mid x_{t-1}) = \N[x_t]{\sqrt{1 - \beta_t}x_{t-1}}{\beta_t \mI}$\\
     $q(x_{t} \mid x_0) = \N[x_t]{\sqrt{\bar\alpha_t}x_{t-1}}{(\bar\alpha-1) \mI}$
-    
-    \columnbreak
 
-    \item \vspace*{-12pt}\textbf{Backward process:} Learn a denoising MC $p$ matching the reversed forward process.\\
+    \item \textbf{Backward process:} Learn a denoising MC $p$ matching the reversed forward process.\\
     $p_\lambda(x_{t-1} \mid x_t) = \N[x_{t-1}]{\mu_\lambda(x_t, t)}{\mSigma_\lambda(x_t, t)}$\\
     $p_\lambda(x_{0:T}) = p_\lambda(x_T) \prod_{t=1}^T p_\lambda(x_{t-1} \mid x_t)$ \\
     $p_\lambda(x_0) = \int p_\lambda(x_{0:T}) \,d x_{1:T}$ where $x_{1:T}$ latent vars.
     
-    \item \textbf{Generation:} Now generate novel data points by simulating the learned denoising MC $p$.\\
-    (1) Sample \scalebox{0.9}{$x_1 \sim p(X_1)$}, (2) Sample \scalebox{0.9}{$x_2 \sim p(X_2 \mid X_1 = x_1)$}, (T) Sample \scalebox{0.9}{$x_T \sim p(X_T \mid X_{T-1} = x_{T-1})$}
+    \item \textbf{Generation:} Now generate novel data points by simulating the learned denoising MC $p$. Sample seq.:\\
+    (1) \scalebox{0.9}{$x_1 \sim p(X_1)$}, (2) \scalebox{0.9}{$x_2 \sim p(X_2 \mid X_1 = x_1)$}, ...
 \end{enumerate}
 
-\vspace{0.5mm}\hrule\vspace{0.5mm}
+\columnbreak
 
 Note $p_\lambda(x_0)$ is intractable. Idea: use VI. ELBO:
 
-\scalebox{0.73}{$\begin{aligned}[t]
+\scalebox{0.8}{$\begin{aligned}[t]
 &\log p_\lambda(x_0) \geq \log p_\lambda(x_0) - \spa{D}_{\mathrm{KL}}(q(\cdot \mid x_0) \| p_\lambda(\cdot \mid x_0))\\[-1.3ex]
 % &= \E[x_{1:T} \sim q(\cdot \mid x_0)]{\log p_\lambda(x_0) - \log \frac{q(x_{1:T} \mid x_0)}{p_\lambda(x_{1:T} \mid x_0)}} \\[-1ex]
 % &= \E[x_{1:T} \sim q(\cdot \mid x_0)]{\log p_\lambda(x_0) - \log \frac{q(x_{1:T} \mid x_0) p_\lambda(x_0)}{p_\lambda(x_{0:T})}} \\[-1ex]

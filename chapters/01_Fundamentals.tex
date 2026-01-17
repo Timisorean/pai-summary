@@ -14,12 +14,10 @@
 \end{framed}
 
 \begin{itemize}
-    \item Gaussian CDF has no closed-form
-    \item Gaussian can be repr. using $O(n^2)$ params.; $\Sigma \in \R^{n \times n}$
+    \item Gaussian CDF has no closed-form; $O(n^2)$ params.
 \end{itemize}
 
 \begin{framed}
-    \textbf{Expectation}
     \begin{itemize}
         \item $\E{\mA \rX + \vb} = \mA \E{\rX} + \vb$;  $\E{\rX + \rY} = \E{\rX} + \E{\rY}$
         \item $\E{\rX\transpose{\rY}} = \E{\rX} \cdot \transpose{\E{\rY}}$ (if $\rX$, $\rY$ indep.)
@@ -27,8 +25,7 @@
         (if $\vg$ nice and $\rX$ cont.)
         \item Tower rule: $\E[\rY]{\E[\rX]{\rX \mid \rY}} = \E{\rX}$
     \end{itemize}
-    \vspace{0.5mm}\hrule\vspace{0.5mm}
-    \textbf{Variance}
+    \vspace{0.2mm}\hrule\vspace{0.2mm}
     \begin{itemize}
         \item
             $\begin{aligned}[t]
@@ -41,8 +38,7 @@
         \item Law of total variance, LOTV: \\
         $\Var{\rX} = \E[\rY]{\Var[\rX]{\rX \mid \rY}} + \Var[\rY]{\E[\rX]{\rX \mid \rY}}$
     \end{itemize}
-    \vspace{0.5mm}\hrule\vspace{0.5mm}
-    \textbf{Covariance}
+    \vspace{0.2mm}\hrule\vspace{0.2mm}
     \begin{itemize}
         \item
             $\begin{aligned}[t]
@@ -61,38 +57,37 @@
     \item \textbf{Change of variables:} Let $\vg$ be diff. and inv. Then for $\rY = \vg(\rX)$: $p_\rY(\vy) = p_\rX(\inv{\vg}(\vy)) \cdot \abs{\det{\jac \inv{\vg}(\vy)}}$ where $\jac \inv{\vg}(\vy)$ is the Jacobian of $\inv{\vg}$ at $\vy$.
 \end{itemize}
 
-\begin{framed}
-    \textbf{Posterior} $p(\vx \mid \vy)$: updated belief about $\vx$ after observing $\vy$. \textbf{Prior} $p(\vx)$: initial belief about $\vx$. \\
-    \textbf{Conditional likelihood} $p(\vy \mid \vx)$: how likely the observations $\vy$ are under a given value $\vx$. \\
-    \textbf{Joint likelihood} $p(\vx, \vy) = p(\vy \mid \vx) p(\vx)$ \\
-    \textbf{Marginal likelihood} $p(\vy)$: how likely the observations $\vy$ are across all values of $\vx$. Can be computed with $p(\vy) = \int_{\rX(\Omega)} p(\vy \mid \vx) \cdot p(\vx) \,d\vx$. 
-\end{framed}
+% \begin{framed}
+%     \textbf{Posterior} $p(\vx \mid \vy)$: updated belief about $\vx$ after observing $\vy$. \textbf{Prior} $p(\vx)$: initial belief about $\vx$.
+%     \textbf{Conditional likelihood} $p(\vy \mid \vx)$: how likely observations $\vy$ are under given value $\vx$.
+%     \textbf{Joint likelihood} $p(\vx, \vy) = p(\vy \mid \vx) p(\vx)$
+%     \textbf{Marginal likelihood} $p(\vy)$: how likely observations $\vy$ are across all values of $\vx$: $p(\vy) = \int_{\rX(\Omega)} p(\vy \mid \vx) \cdot p(\vx) \,d\vx$. 
+% \end{framed}
 
 \begin{framed}
     \textbf{Bayes' rule}: $p(\vx \mid \vy) = \frac{p(\vy \mid \vx) \cdot p(\vx)}{p(\vy)}$
 \end{framed}
 
 \begin{itemize}
-    \item If prior $p(\vx)$ and posterior $p(\vx \mid \vy)$ from same family of distr., prior is \textbf{conjugate prior} to the likelihood $p(\vy \mid \vx)$.
+    \item If prior $p(\vx)$ and posterior $p(\vx \mid \vy)$ from same fam. of distr., prior is \textbf{conjugate prior} to likelihood $p(\vy \mid \vx)$.
     \item Beta distr. is a conjugate prior to binomial likelihood.
-    \item Under some conditions, the \textbf{Gaussian is self-conjugate} (Gaussian prior and likelihood $\rightarrow$ posterior Gaussian).
+    \item Under some conditions, \textbf{Gaussian is self-conjugate} (Gaussian prior and likelihood $\rightarrow$ posterior Gaussian).
 \end{itemize}
 
-\vspace{0.5mm}\hrule\vspace{0.5mm}
+\vspace{0.2mm}\hrule\vspace{0.2mm}
 
-\textbf{Choice of prior}
 \begin{itemize}
     \item Choosing non-informative prior in absence of evidence is \textbf{principle of indifference/insufficient reason}.
-    \item \textbf{Improper prior:} It is not required that the prior is a valid distr. (i.e., integrates to 1). We can still derive meaning from the posterior if it's valid.
-    \item \textbf{Maximum entropy principle:} choose a prior from all possible distributions that are consistent with prior knowledge, s.t. one that makes the least “additional assumptions”, i.e., the prior that is least “informative”.
+    \item \textbf{Improper prior:} not required that prior is a valid distr. (i.e., integrates to 1). Can still derive meaning.
+    \item \textbf{Max. entropy principle:} choose prior s.t. one that makes the least “additional assumptions”, i.e., prior least “informative”.
 \end{itemize}
 
-\vspace{0.5mm}\hrule\vspace{0.5mm}
+\vspace{0.2mm}\hrule\vspace{0.2mm}
 
 \textbf{Gaussian properties}
 \begin{itemize}
     \item \textbf{Gaussians have max. entropy among all distr.}\\[-0.5ex]
-    with known mean and variance: $\sfrac{1}{2} \cdot \log \parentheses{(2 \pi e)^d \det{\mSigma}}$
+    with known mean and var.: $\sfrac{1}{2} \cdot \log \parentheses{(2 \pi e)^d \det{\mSigma}}$
     % \item \scalebox{0.9}{$\I{\rX}{\rY} = \frac12 \log \det{\mI + \sigma_n^{-2} \mSigma)}$}
     \item Jointly Gaussian random vectors, $\rX$ and $\rY$, are independent iff $\rX$ and $\rY$ are uncorrelated.
     \item Closed under marginalization and conditioning.
@@ -107,7 +102,6 @@
         \end{aligned}$ \\
         Observe that the variance can only shrink.
     \end{framed}
-    \columnbreak
     \item Additive and closed under affine transformations.
     \begin{framed}
         \begin{itemize}
@@ -118,28 +112,24 @@
     \end{framed}
 \end{itemize}
 
-\vspace{0.5mm}\hrule\vspace{0.5mm}
+\vspace{0.2mm}\hrule\vspace{0.2mm}
 
-\textbf{Maximum likelihood estimate (MLE)}: \\
-\scalebox{0.9}{$\vthetahat_\MLE \defeq \underset{\vtheta \in \Theta}{\argmax} p(y_{1:n} \mid \vx_{1:n}, \vtheta) = \underset{\vtheta \in \Theta}{\argmax} \sum_{i=1}^n \log p(y_i \mid \vx_i, \vtheta)$}
+\textbf{Maximum likelihood estimate (MLE)}: \\[-0.5ex]
+\scalebox{0.9}{$\vthetahat_\MLE \defeq \underset{\vtheta \in \Theta}{\argmax} p(y_{1:n} \mid \vx_{1:n}, \vtheta) = \underset{\vtheta \in \Theta}{\argmax} \sum_{i=1}^n \log p(y_i \mid \vx_i, \vtheta)$}\vspace{-3pt}
 \begin{itemize}
     \item \textbf{Consistent} if: $\vthetahat_\MLE \convp \opt{\vtheta}$ as $n \to \infty$.
-    \item \textbf{Asymptotically normal} if $\vthetahat_\MLE \convd \N{\opt{\vtheta}}{\mS_n}$ as $n \to \infty$ where $\mS_n$ is the asymptotic covariance of MLE.
+    \item \textbf{Asymptotically normal} if $\vthetahat_\MLE \convd \N{\opt{\vtheta}}{\mS_n}$ as $n \to \infty$ where $\mS_n$ is asymptotic covar. of MLE.
     \item MLE is \textbf{asymptotically efficient} (there exists no other consistent estimator with a “smaller” asymptotic var.).
     \item For the finite sample regime, the MLE need not be unbiased, and it is susceptible to overfitting to the (finite) training data.
 \end{itemize}
 
-\vspace{0.5mm}\hrule\vspace{0.5mm}
+\vspace{0.2mm}\hrule\vspace{0.2mm}
 
-\textbf{Maximum a posterior (MAP) estimate}:\\
-\scalebox{0.9}{
-$\begin{aligned}[t]
-\vthetahat_\MAP &\defeq \argmax_{\vtheta \in \Theta} p(\vtheta \mid \vx_{1:n}, y_{1:n}) \\[-1.5ex]
-&= \argmin_{\vtheta \in \Theta} \underbrace{- \log p(\vtheta)}_{\text{regularization}} + \underbrace{\ell_\mathrm{nll}(\vtheta; \spD_n)}_{\text{quality of fit}}
-\end{aligned}$}\\
+\textbf{Maximum a posterior (MAP) estimate}:\\[-0.5ex]
+$\vthetahat_\MAP \defeq \argmin_{\vtheta \in \Theta} \underbrace{- \log p(\vtheta)}_{\text{regularization}} + \underbrace{\ell_\mathrm{nll}(\vtheta; \spD_n)}_{\text{quality of fit}}$\\
 The \textbf{log-prior} $\log p(\vtheta)$ acts as a regularizer. Common:
 \begin{itemize}
     \item $p(\vtheta) = \N[\vtheta]{\vzero}{\lambda \mI}$ gives $-\log p(\vtheta) = \frac{\lambda}{2} \norm{\vtheta}_2^2 + \const$
     \item $p(\vtheta) = \Laplace[\vtheta]{\vzero}{\lambda}$ gives $-\log p(\vtheta) = \lambda \norm{\vtheta}_1 + \const$
-    \item Uniform prior gives $\const$ (no regularization, MAP is equivalent to the MLE)
+    \item Uniform prior gives $\const$ (no reg., MAP is MLE)
 \end{itemize}

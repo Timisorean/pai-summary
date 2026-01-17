@@ -1,9 +1,9 @@
-\vspace{0.5mm}\hrule\vspace{0.5mm}
+\vspace{0.2mm}\hrule\vspace{0.2mm}
 \section{Variational Inference}
 
 Idea: approximate true posterior distribution with a simpler posterior that is easy to sample: \\$p(\vtheta \mid \vx_{1:n}, y_{1:n}) = \frac{1}{Z} p(\vtheta, y_{1:n} \mid \vx_{1:n}) \approx q(\vtheta \mid \vlambda) \eqdef q_\vlambda(\vtheta)$, where $\vlambda$ are params. of the \textbf{variational posterior} $q_\vlambda$.\\
 
-\vspace{0.5mm}\hrule\vspace{0.5mm}
+\vspace{0.2mm}\hrule\vspace{0.2mm}
 
 \textbf{Laplace approx.}: find a Gaussian approx. (i.e. second-order Taylor) of the posterior around its mode:
 $q(\vtheta) \defeq \N[\vtheta]{\vthetahat}{\inv{\mLambda}} \propto \exp(\hat{\psi}(\vtheta))$, with $\vthetahat$ the mode (i.e. MAP estimate) and with $\hes$ the Hessian: $\mLambda \defeq - \hes_\psi(\vthetahat) = - \hes_\vtheta \log p(\vtheta \mid \vx_{1:n}, y_{1:n}) \bigl|_{\vtheta = \vthetahat}$. \\
@@ -12,13 +12,18 @@ Perform inference using the variations approximation: \scalebox{0.9}{$\begin{ali
     &= \E[\vtheta \sim q_\vlambda]{p(\ys \mid \vxs, \vtheta)}
 \end{aligned}$}
 
-\columnbreak
+% \columnbreak
 
 \begin{itemize}
     \item Matches shape of true posterior around its mode but may not represent it accurately elsewhere.
     \item Leads to extremely overconfident predictions, often unsuitable for approximate probabilistic inference.
-    \item Preserves MAP point estimate as its mean and just “adds” a little uncertainty around it.
+    \item Preserves MAP point estimate as its mean.
 \end{itemize}
+
+\begin{framed}
+    \textbf{Jensen's inequality}: For convex fn. $g$ we have:
+    $g(\E{X}) \leq \E{g(X)}$; if $h$ concave: $h(\E{X}) \geq \E{h(X)}$
+\end{framed}
 
 \begin{framed}
     \textbf{Surprise} of an event with probability $u$: $\S{u} \defeq - \log u$.\\
@@ -32,20 +37,16 @@ Perform inference using the variations approximation: \scalebox{0.9}{$\begin{ali
 \end{framed}
 
 \begin{framed}
+    The \textbf{cross-entropy} of $q$ relative to $p$ is: \\
+    $\crH{p}{q} \defeq \E[x \sim p]{\S{q(x)}} = \E[x \sim p]{- \log q(x)}$.
+\end{framed}
+
+\begin{framed}
     \textbf{Entropy} of distr. $p$ is avg. surprise of samples from $p$:\\
     $\H{p} \defeq \E[x \sim p]{\S{p(x)}} = \E[x \sim p]{- \log p(x)}$.\\
     Can be negative but if $p$ is discrete then $\text H[p] \ge 0$.
 \end{framed}
 
-\begin{framed}
-    \textbf{Jensen's inequality}: For convex fn. $g$ we have:
-    $g(\E{X}) \leq \E{g(X)}$; if $h$ concave: $h(\E{X}) \geq \E{h(X)}$
-\end{framed}
-
-\begin{framed}
-    The \textbf{cross-entropy} of $q$ relative to $p$ is: \\
-    $\crH{p}{q} \defeq \E[x \sim p]{\S{q(x)}} = \E[x \sim p]{- \log q(x)}$.
-\end{framed}
 \begin{framed}
     \textbf{KL-div.}: measures additional expected surprise when observing samples from $p$ that is due to assuming (wrong) $q$ and which is not inherent in $p$ already.\\[-0.5ex]
     $\KL{p}{q} \defeq \crH{p}{q} - \H{p} = \E[\vtheta \sim p]{\log \frac{p(\vtheta)}{q(\vtheta)}}$
@@ -55,15 +56,16 @@ Perform inference using the variations approximation: \scalebox{0.9}{$\begin{ali
     \end{itemize}
 \end{framed}
 
-Note that: $\crH{p}{q} = \H{p} + \KL{p}{q} \geq \H{p}$.\\
+Note that: $\crH{p}{q} = \H{p} + \KL{p}{q} \geq \H{p}$.
 
+\vspace{-2pt}
 \begin{itemize}
     \item $\KL{\Bern{p}}{\Bern{q}} = p \log \frac{p}{q} + (1-p) \log \frac{(1-p)}{(1-q)}$
     \item For ${p \defeq \N{\vmu_p}{\mSigma_p}}$ and ${q \defeq \N{\vmu_q}{\mSigma_q}}$: $\KL{p}{q} =$\\
     \scalebox{0.8}{$\frac12 \left(\mathrm{tr}(\inv{\mSigma_q} \mSigma_p) + \transpose{(\vmu_p - \vmu_q)} \inv{\mSigma_q} (\vmu_p - \vmu_q) - d + \log \frac{\det{\mSigma_q}}{\det{\mSigma_p}}\right)$}
 \end{itemize}
 
-\vspace{0.5mm}\hrule\vspace{0.5mm}
+\vspace{0.2mm}\hrule\vspace{0.2mm}
 
 \begin{itemize}
     \item \textbf{Forward KL}: $\qs_1 \defeq \argmin_{q \in \spQ} \KL{p}{q}$(mode\\[-0.2ex]
@@ -83,7 +85,7 @@ Note that: $\crH{p}{q} = \H{p} + \KL{p}{q} \geq \H{p}$.\\
 
 \begin{itemize}
     \item Max. ELBO selects a var. distr. $q$ that is close to prior $p(\cdot)$ while also max. avg. data likelihood \scalebox{0.9}{$p(y_{1:n} \mid \vx_{1:n}, \vtheta)$} for $\vtheta \sim q$. Contrast to MAP, which picks single mode $\vtheta$ that max. the likelihood and proximity to the prior.
-    \item ELBO gradient is gen. \textbf{intractable} (use reparam. trick).
+    \item ELBO gradient is gen. \textbf{intractable} (use rep. trick).
 \end{itemize}
 
 \begin{framed}
@@ -93,6 +95,7 @@ Note that: $\crH{p}{q} = \H{p} + \KL{p}{q} \geq \H{p}$.\\
 \end{framed}
 
 \begin{itemize}
-     \item For ELBO $\grad_\vlambda \E[\vtheta \sim q_\vlambda]{\vf(\vtheta)} = \E[\vepsilon \sim \phi]{\grad_\vlambda \vf(\vg(\vepsilon; \vlambda))}$. If we can find $\vg$ and suitable reference density $\phi$ which is indep. of $\vlambda$, we say $q_\vlambda$ is \textbf{reparametrizable}.
+    \item For ELBO $\grad_\vlambda \E[\vtheta \sim q_\vlambda]{\vf(\vtheta)} = \E[\vepsilon \sim \phi]{\grad_\vlambda \vf(\vg(\vepsilon; \vlambda))}$.
+     % If we can find $\vg$ and suitable reference density $\phi$ which is indep. of $\vlambda$, we say $q_\vlambda$ is \textbf{reparametrizable}.
     \item For Gaussian: $q_\vlambda(\vtheta) \defeq \N[\vtheta]{\vmu}{\mSigma}$; ${\vepsilon \sim \SN}$, set: $\vtheta = \vg(\vepsilon; \vlambda) \defeq \msqrt{\mSigma} \vepsilon + \vmu$, then: $\phi(\vepsilon) = q_\vlambda(\vtheta) \cdot \abs{\det{\msqrt{\mSigma}}}$ and $\vepsilon = \inv{\vg}(\vtheta; \vlambda) = \mSigma^{-\nicefrac{1}{2}}(\vtheta - \vmu)$
 \end{itemize}

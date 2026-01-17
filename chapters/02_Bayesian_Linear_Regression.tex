@@ -1,9 +1,9 @@
-\vspace{0.5mm}\hrule\vspace{0.5mm}
+\vspace{0.2mm}\hrule\vspace{0.2mm}
 \section{Bayesian Linear Regression (BLR)}
-\vspace{-5pt}
+\vspace{-2pt}
 \scalebox{0.9}{$\begin{aligned}[t]
-    \vwhat_{\ls} &\defeq \underset{\vw \in \R^d}{\argmin} \norm{\vy - \mX\vw}^2_2 = \underset{\vw \in \R^d}{\argmin} \sum_{i=1}^n (y_i - \transpose\vw \vx_i)^2 \\[-1.5ex]
-    \vwhat_{\ridge} &\defeq \underset{\vw \in \R^d}{\argmin} \norm{\vy - \mX\vw}^2_2 + \lambda \norm{\vw}_2^2 \\[-1ex]
+    % \vwhat_{\ls} &\defeq \underset{\vw \in \R^d}{\argmin} \norm{\vy - \mX\vw}^2_2 = \underset{\vw \in \R^d}{\argmin} \sum_{i=1}^n (y_i - \transpose\vw \vx_i)^2 \\[-1.5ex]
+    % \vwhat_{\ridge} &\defeq \underset{\vw \in \R^d}{\argmin} \norm{\vy - \mX\vw}^2_2 + \lambda \norm{\vw}_2^2 \\[-1ex]
     % \vwhat_{\lasso} &\defeq \dots + \lambda \norm{\vw}_1; \quad \vwhat_{\ridge} \defeq \dots + \lambda \norm{\vw}_2^2
     \vwhat_{\ls} &= \inv{(\transpose{\mX} \mX)} \transpose{\mX} \vy; \quad \vwhat_{\ridge} = \inv{(\transpose{\mX} \mX + \lambda \mI)} \transpose{\mX} \vy
 \end{aligned}$}
@@ -17,33 +17,32 @@
 %     $
 % \end{framed}
 
-\vspace{0.5mm}\hrule\vspace{0.5mm}
+\vspace{0.2mm}\hrule\vspace{0.2mm}
 
 % \textbf{Notable Results}: $\Var{\vwhat_{\ls} \mid \rX} = \sigman^2(\transpose{\rX}\rX)^{-1}$
 
 \textbf{Gaussian prior on weights} $\vw \sim \N{\vzero}{\sigmap^2 \mI}$:
 \begin{itemize}
-    \item Yields Gaussian posterior $\vw \mid\vx_{1:n}, y_{1:n} \sim \N{\vmu}{\mSigma}$, as $\log p(\vw \mid \vx_{1:n}, y_{1:n}) = -\frac{1}{2} \brackets{\transpose{\vw}\mSigma^{-1}\vw - 2\vmu} + \const$, with $\mSigma \defeq \inv{\parentheses{\sigman^{-2} \transpose{\mX} \mX + \sigmap^{-2} \mI}}$ and $\vmu \defeq \sigman^{-2} \mSigma \transpose{\mX} \vy$.
+    \item Yields Gaussian posterior $\vw \mid\vx_{1:n}, y_{1:n} \sim \N{\vmu}{\mSigma}$, as $\log p(\vw \mid \vx_{1:n}, y_{1:n}) = -\frac{1}{2} \brackets{\transpose{\vw}\mSigma^{-1}\vw - 2\vmu} + \const$, w. $\mSigma \defeq \inv{\parentheses{\sigman^{-2} \transpose{\mX} \mX + \sigmap^{-2} \mI}}$ and $\vmu \defeq \sigman^{-2} \mSigma \transpose{\mX} \vy$.
     \item MAP is \textit{identical to ridge regression} with $\lambda \defeq \sigman^2 / \sigmap^2$. 
     \item \textbf{Bayesian inference}: Distr. for a test point $\vxs$ is: $\ys \mid \vxs, \vx_{1:n}, y_{1:n} \sim \N{\transpose{\vmu} \vxs}{\transpose{\vxs} \mSigma \vxs + \sigman^2}$
 \end{itemize}
 
-\vspace{2mm}
 \textbf{Laplace prior on weights} $\vw \sim \Laplace{\vzero}{h}$:
 \begin{itemize}
     \item MAP is \textit{identical to lasso regression} with $\lambda \defeq \sigman^2 / h$. 
 \end{itemize}
 
-\vspace{0.5mm}\hrule\vspace{0.5mm}
+\vspace{0.2mm}\hrule\vspace{0.2mm}
 
 \textbf{Heteroscedastic} noise $\vepsilon_i$ may depend on $\vx_i$, while \textbf{Homoscedastic} may not. \\[1ex]
 \scalebox{0.95}{$\Var{\ys \mid \vxs} = \underbrace{\E[\vtheta]{\Var[\ys]{\ys \mid \vxs, \vtheta}}}_{\text{aleatoric uncertainty}} + \underbrace{\Var[\vtheta]{\E[\ys]{\ys \mid \vxs, \vtheta}}}_{\text{epistemic uncertainty}}$}
 \textbf{Aleatoric:} noise in data; \textbf{Epistemic:} noise in model.
 
-\vspace{0.5mm}\hrule\vspace{0.5mm}
+\vspace{0.2mm}\hrule\vspace{0.2mm}
 
-Applying linear regression to non-linear functions: use non-linear transformation $\vphi$ to $\rX$. Define $\mPhi = \vphi(\rX)$. \\[-0.5ex]
-With Gaussian prior and $\mK = \sigmap^2 \mPhi \transpose{\mPhi}$ we get: \\[-1ex]
+Applying linear reg. to non-linear fns.: use non-linear transformation $\vphi$ to $\rX$. Define $\mPhi = \vphi(\rX)$. With\\[-0.5ex]
+Gaussian prior and $\mK = \sigmap^2 \mPhi \transpose{\mPhi}$: \\[-0.5ex]
 $\vf \mid \mX \sim \N{\mPhi \E{\vw}}{\mPhi \Var{\vw} \transpose{\mPhi}} = \N{\vzero}{\mK}$.
 
 \textbf{Kernel}: $k(\vx, \vxp) \defeq \sigmap^2 \transpose{\vphi(\vx)} \vphi(\vxp) = \Cov{f(\vx), f(\vxp)}$
@@ -53,6 +52,7 @@ $\vf \mid \mX \sim \N{\mPhi \E{\vw}}{\mPhi \Var{\vw} \transpose{\mPhi}} = \N{\vz
     \item Kernel matrix has shape $n \times n$ (input space dimension) instead of $e \times e$ (feature space dimension).
 \end{itemize}
 
+\vspace{-2pt}
 For \textbf{inference}, define \scalebox{0.8}{$\Tilde\mPhi \defeq \begin{bmatrix}
     \mPhi \\
     \vphi(\transpose\vxs) \\
@@ -62,34 +62,32 @@ For \textbf{inference}, define \scalebox{0.8}{$\Tilde\mPhi \defeq \begin{bmatrix
 \end{bmatrix}$}, \scalebox{0.8}{$\Tilde\vf \defeq \begin{bmatrix}
     \vf \\
     \fs \\
-\end{bmatrix}$}. \\
+\end{bmatrix}$}.\\[-1ex]
 For $\Tilde\vf = \Tilde\mPhi w$ we have: $\Tilde\vy \mid \mX, \vxs \sim \N{\vzero}{\Tilde\mK + \sigma_n^2 \mI}$
  
 \begin{framed}
     \begin{itemize}
-        \item \textbf{Linear kernel}: $k(\vx, \vxp) = l \transpose{\vx} \vxp$ \vspace{-5pt}
-        \item \textbf{RBF/Gaussian kernel}: $k(\vx, \vxp) = \exp(-\frac{(\vx - \vxp)^2}{2l^2})$ \\[-0.8ex]
-        (larger length scale $l$ results in smoother fns.; cannot model under the weight-space view of BLR; feature space are polynomials of infinite degree)
-        \item \textbf{Polynomial kernel} $k(\vx, \vxp) = (1 + \transpose{\vx} \vxp)^d$ \\
-        (feature space are polynomials of degree $d$)
-        \item \textbf{Laplacian kernel}: $k(\vx, \vxp) = \exp{(-\alpha \norm{\vx - \vxp})}$\\
-        (non-smooth)
-        \item \textbf{Matérn kernel}: (For $v=\frac12$ equiv. to Laplace kernel, for $v \rightarrow \infty$ equal to RBF kernel)
+        \item \textbf{Linear}: $k(\vx, \vxp) = l \transpose{\vx} \vxp$ \vspace{-5pt}
+        \item \textbf{RBF/Gaussian}: $k(\vx, \vxp) = \exp(-\frac{(\vx - \vxp)^2}{2l^2})$
+        (larger $l$ gives smoother fns.; cannot model under weight-space view of BLR; feature space are poly. of infinite degree)
+        \item \textbf{Polynomial} $k(\vx, \vxp) = (1 + \transpose{\vx} \vxp)^d$\\
+        (feature space are poly. of degree $d$)
+        \item \textbf{Laplacian}: $k(\vx, \vxp) = \exp{(-\alpha \norm{\vx - \vxp})}$
+        \item \textbf{Matérn}: (For $v=\frac12$ Laplace, for $v \rightarrow \infty$ RBF)
     \end{itemize}
 \end{framed}
 
 \begin{framed}
     \textbf{Properties of kernels}
     \begin{itemize}
-        \item Symmetric: $k(\vx, \vxp) = k(\vxp, \vx)$
-        \item $\mK_{\sA\sA}$ is p.s.d.
+        \item Symmetric: $k(\vx, \vxp) = k(\vxp, \vx)$ \hspace{0.2cm} \scalebox{0.7}{\textbullet} $\mK_{\sA\sA}$ is p.s.d.
         \item \textbf{Stationary} if there exists $\tilde{k}$ s.t. $\tilde{k}(\vx - \vxp) = k(\vx, \vxp)$ \\
         (only relative location of points matters)
         \item \textbf{Isotropic} if there exists $\tilde{k}$ s.t. $\tilde{k}(\norm{\vx-\vxp}_2) = k(\vx, \vxp)$ \\
         (only distance between points matters)
     \end{itemize}
 
-    \vspace{0.5mm}\hrule\vspace{0.5mm}
+    \vspace{0.2mm}\hrule\vspace{0.2mm}
 
     \textbf{Composition of kernels}
     \begin{itemize}
@@ -101,20 +99,23 @@ For $\Tilde\vf = \Tilde\mPhi w$ we have: $\Tilde\vy \mid \mX, \vxs \sim \N{\vzer
     \end{itemize}
 \end{framed}
 
-\textbf{Efficient online BLR} ($O(d^2)$ instead of $O(d^3)$):
+\columnbreak
+
+\textbf{Efficient online BLR} ($O(d^2)$ instead of $O(d^3)$):\vspace{-2pt}
 \begin{itemize}
-    \item $\transpose{{\mX^{(t+1)}}} \mX^{(t+1)} = \transpose{{\mX^{(t)}}} \mX^{(t)} + \transpose{{\vx^{(t)}}} \vx^{(t)} \in \R^{d \times d}$
-    \item $\transpose{{\mX^{(t+1)}}} \vy^{(t+1)} = \transpose{{\mX^{(t)}}} \vy^{(t)} + \transpose{{\vx^{(t)}}} \vy^{(t)} \in \R^d$
+    \item $\transpose{{\mX^{(t+1)}}} \mX^{(t+1)} = \transpose{{\mX^{(t)}}} \mX^{(t)} + \transpose{{\vx^{(t)}}} \vx^{(t)} \in \R^{d \times d}$\vspace{-2pt}
+    \item $\transpose{{\mX^{(t+1)}}} \vy^{(t+1)} = \transpose{{\mX^{(t)}}} \vy^{(t)} + \transpose{{\vx^{(t)}}} \vy^{(t)} \in \R^d$ \vspace{-1pt}
     \item Since $\transpose{\mX} \mX = \sum_{i=1}^t \vx_i \transpose\vx_i$ and $\transpose{\mX} \vy = \sum_{i=1}^t y_i x_i$
 \end{itemize}
 
-\vspace{0.5mm}\hrule\vspace{0.5mm}
+\vspace{0.2mm}\hrule\vspace{0.2mm}
 
 \textbf{Logistic BLR:}
 
-\scalebox{0.9}{$\vwhat_\MAP = \underset{\vw \in \R^d}{\argmin} \frac1{2\sigma_p^2} \norm{\vw}_2^2 + \sum_{i=1}^n \log(1 + \exp(-y_i \transpose\vw \vx_i))$}
+\scalebox{0.9}{$\vwhat_\MAP = \underset{\vw \in \R^d}{\argmin} \frac1{2\sigma_p^2} \norm{\vw}_2^2 + \sum_{i=1}^n \log(1 + \exp(-y_i \transpose\vw \vx_i))$}\vspace{-2pt}
 
 \begin{itemize}
-    \item For $\lambda = 1/(2 \sigma_p^2)$ this is equiv. to standard logistic regression where $\ell_\text{log}(\transpose\vw \vx; y) \doteq \log(1 + \exp(-y \transpose\vw \vx))$ and $\nabla_\vw \ell_\text{log}(\transpose\vw \vx; y) = -y \vx \cdot \sigma(-y \transpose\vw \vx)$.
-    \item Posterior is not Gaussian or closed-form, but its log. density is convex
+    \item For $\lambda = 1/(2 \sigma_p^2)$ this is equiv. to standard logistic reg.\\[-0.2ex]
+    where $\ell_\text{log}(\transpose\vw \vx; y) \doteq \log(1 + \exp(-y \transpose\vw \vx))$ and $\nabla_\vw \ell_\text{log}(\transpose\vw \vx; y) = -y \vx \cdot \sigma(-y \transpose\vw \vx)$.
+    \item Post. not Gaussian or closed, but log. density is convex
 \end{itemize}

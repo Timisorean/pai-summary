@@ -1,6 +1,7 @@
-\vspace{0.5mm}\hrule\vspace{0.5mm}
+\vspace{0.2mm}\hrule\vspace{0.2mm}
 \section{Bayesian Deep Learning}
 
+\vspace{-2pt}
 \textbf{Universal approx. theorem:} Any ANN with a single hidden layer (arbitrary width) and non-poly. activation fn. can approx. any cont. fn. to an arbitrary accuracy.
 
 % \begin{framed}
@@ -8,15 +9,14 @@
 % \end{framed}
 
 \begin{itemize}
-    \item \textbf{Softmax}: $\sigma_i(\vf) \defeq \frac{\exp(f_i)}{\sum_{j=1}^c \exp(f_j)}$ (classification)\\[-0.5ex]
-    $\nabla_z \sigma_i(\vf) = \sigma_i(\vf)(1 - \sigma_i(\vf))$\vspace{-0.5ex}
     \item \textbf{Hyperbolic tangent}: $\mathrm{Tanh}(z) \defeq \frac{\exp(z) - \exp(-z)}{\exp(z) + \exp(-z)}$\\[-0.5ex]
     $\nabla_z \mathrm{Tanh}(z) = 1 - \mathrm{Tanh}^2(z)$; $\mathrm{Tanh}(z) = 2 \sigma (2z) - 1$; 
+    \item \textbf{Softmax}: $\sigma_i(\vf) \defeq \frac{\exp(f_i)}{\sum_{j=1}^c \exp(f_j)}$ (classification)\\[-0.5ex]
+    $\nabla_z \sigma_i(\vf) = \sigma_i(\vf)(1 - \sigma_i(\vf))$ \hfill $\nabla_z \mathrm{ReLU}(z) = \mathbf 1_{\{z \ge 0\}}$
     \item \textbf{Rectified linear unit}: $\mathrm{ReLU}(z) \defeq \max \{z, 0\} \in [0, \infty)$\\[-0.5ex]
-    $\nabla_z \mathrm{ReLU}(z) = \mathbf 1_{\{z \ge 0\}}$
 \end{itemize}
 
-For linear regression, minimizing MSE/CE \textbf{corresponds to MLE} under a Gaussian likelihood.
+For linear regression, min. MSE/CE \textbf{corresponds to MLE} under a Gaussian likelihood.
 
 \begin{itemize}
     \item \textbf{MSE loss:} $\ell_\mse(\vtheta; \spD) \defeq \frac1n \sum_{i=1}^n (f(\vx_i; \vtheta) - y_i)^2$\vspace{-0.5ex}
@@ -34,12 +34,12 @@ For linear regression, minimizing MSE/CE \textbf{corresponds to MLE} under a Gau
 \textbf{Also modeling heteroscedastic noise}: Use a neural network with 2 outputs $f_1, f_2$, and define: $y \mid \vx, \vtheta \sim \N{\mu(\vx; \vtheta)}{\sigma^2(\vx; \vtheta)}$ where $\mu(\vx; \vtheta) \defeq f_1(\vx; \vtheta)$ and $\sigma^2(\vx; \vtheta) \defeq \exp(f_2(\vx; \vtheta))$. Likelihood term:\\[-0.5ex]
 \scalebox{0.9}{$\log p(y_i \mid \vx_i, \vtheta) = \const - \frac{1}{2} \brackets{\log \sigma^2(\vx_i; \vtheta) + \frac{(y_i - \mu(\vx_i; \vtheta))^2}{\sigma^2(\vx_i; \vtheta)}}$}.
 
-\vspace{0.5mm}\hrule\vspace{0.5mm}
+\vspace{0.2mm}\hrule\vspace{0.2mm}
 
 \begin{itemize}
     \item BNN learning and inference are \textbf{generally intractable} when the noise is not assumed to be homoscedastic and known. Thus, we need approx. inference.
     \item Goal: approx. true posterior $p(\vtheta \mid \spD)$ with simpler var-\\iational distr. $q_\vlambda$ typically family of indep. Gaussians.
-    \item Achieved by max. ELBO with SGD and reparm. trick.
+    \item Achieved by max. ELBO with SGD and rep. trick.
     \item We can approx. the predictive distr. by sampling from the variational posterior $p(\ys \mid \vxs, \vx_{1:n}, \vy_{1:n}) \approx \E[\theta \sim q_\vlambda]{p(\ys \mid \vxs, \vtheta)}\approx \frac{1}{m} \sum_{i=1}^m p(\ys \mid \vxs, \vtheta^{(i)})$.
     \item VI in BNNs can be seen as avg. preds. of multiple NNs drawn acc. to the variational posterior $q_\vlambda$.
     \item Using Monte Carlo samples estimate mean and var.:\\
@@ -52,12 +52,12 @@ For linear regression, minimizing MSE/CE \textbf{corresponds to MLE} under a Gau
     $}
 \end{itemize}
 
-\vspace{0.5mm}\hrule\vspace{0.5mm}
+\vspace{0mm}\hrule\vspace{0.2mm}
 
-Alternative inference techniques:
+% Alternative inference techniques:
 \begin{itemize}
-    \item \textbf{Dropout/Dropconnect} randomly select/omits vertices/edges of the comp. graph. For valid interpretation of this as variational inference, we also need to perform dropout/dropconnect during inference.
-    \item Dropout masks will overlap, making predictions highly correlated, leading to underestimation of epistemic uc. \textbf{Masksembles} mitigate by choosing fixed set of pre-defined dropout masks (controlled overlap).
+    \item \textbf{Dropout/Dropconnect} random select/omits vertices/edges of comp. graph. For valid interpretation of this as VI, also need to perform during inference.
+    \item Dropout masks will overlap, making preds. highly corr., leading to underest. of epistemic uc. \textbf{Masksembles} mitigate by choosing fixed set of pre-defined masks.
     \item \textbf{Probabilistic ensembles:} learn $m$ different NN over random chosen subsets of train data for each network.
 \end{itemize}
 
@@ -77,7 +77,9 @@ A model is \textbf{well-calibrated} if its confidence coincides with its acc. ac
 
 \begin{framed}
     \begin{itemize}
-        \item \textbf{ECE}: $\ell_{\mathrm{ECE}} \defeq \sum_{m=1}^M \frac{\card{\sB_m}}{n} \abs{\mathrm{freq}(\sB_m) - \mathrm{conf}(\sB_m)}$
-        \item \textbf{MCE}: $\ell_{\mathrm{ECE}} \defeq \underset{m \in [M]}{\max} \frac{\card{\sB_m}}{n} \abs{\mathrm{freq}(\sB_m) - \mathrm{conf}(\sB_m)}$
+        \item \textbf{ECE:} $\ell_{\mathrm{ECE}} \defeq \sum_{m=1}^M \frac{\card{\sB_m}}{n} \abs{\mathrm{freq}(\sB_m) - \mathrm{conf}(\sB_m)}$
+        % \item \textbf{MCE}: $\ell_{\mathrm{ECE}} \defeq \underset{m \in [M]}{\max} \frac{\card{\sB_m}}{n} \abs{\mathrm{freq}(\sB_m) - \mathrm{conf}(\sB_m)}$
+        \vspace{-2pt}
+        \item \textbf{MCE:} Max instead of sum
     \end{itemize}
 \end{framed}

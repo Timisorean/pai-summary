@@ -1,14 +1,14 @@
-\vspace{0.5mm}\hrule\vspace{0.5mm}
+\vspace{0.2mm}\hrule\vspace{0.2mm}
 \section{Bayesian Optimization}
 
 \begin{framed}
-    \textbf{Cumulative regret} for time horizon $T$ associated with choices $\{\vx_t\}_{t=1}^T$ is: $R_T \defeq \sum_{t=1}^T \underbrace{({\max_\vx \opt{f}(\vx) - \opt{f}(\vx_t)})}_{\text{\textit{instantaneous regret}}}$.
+    \textbf{Cumulative regret} associated with choices $\{\vx_t\}_{t=1}^T$ is: $R_T \defeq \sum_{t=1}^T \underbrace{({\max_\vx \opt{f}(\vx) - \opt{f}(\vx_t)})}_{\text{\textit{instantaneous regret}}}$.
 \end{framed}
 
-Goal: Achieve sublinear regret: $\lim_{T\to\infty} \sfrac{R_T}{T} = 0$ (requires balancing exploration and exploitation).
+Goal: Achieve \textbf{sublinear regret}: $\lim_{T\to\infty} \sfrac{R_T}{T} = 0$ (requires balancing exploration and exploitation).
 
-\vspace*{-1.5pt}
-\includegraphics[width=0.8\linewidth]{images/Bayesian_Optimization.png}
+\vspace{0mm}\hrule\vspace{0.2mm}
+\includegraphics[width=0.8\linewidth,trim={0 0.8cm 0 0.8cm},clip]{images/Bayesian_Optimization.png}
 
 \begin{itemize}
     \item Common to use an \textbf{acquisition fn.} to greedily pick the next point to sample based on the current model.
@@ -16,7 +16,7 @@ Goal: Achieve sublinear regret: $\lim_{T\to\infty} \sfrac{R_T}{T} = 0$ (requires
 \end{itemize}
 
 \begin{framed}
-    When choosing $\beta_t$ appropriately: \scalebox{0.9}{$R_T = \BigO{\sqrt{T \gamma_T}}$}, with \scalebox{0.9}{$\gamma_T \defeq \max_{\substack{\sS \subseteq \spX \\ \card{\sS} = T}} \I{\vf_\sS}{\vy_\sS} = \max_{\substack{\sS \subseteq \spX \\ |\sS| = T}} \frac{1}{2} \log\det{\mI + \sigman^{-2} \mK_{\sS\sS}}$}, is the maximum information gain after $T$ rounds.
+    When choosing $\beta_t$ appropriately: \scalebox{0.8}{$R_T = \BigO{\sqrt{T \gamma_T}}$}, with \scalebox{0.9}{$\gamma_T \defeq \max_{\substack{\sS \subseteq \spX \\ \card{\sS} = T}} \I{\vf_\sS}{\vy_\sS} = \max_{\substack{\sS \subseteq \spX \\ |\sS| = T}} \frac{1}{2} \log\det{\mI + \sigman^{-2} \mK_{\sS\sS}}$}, is the maximum information gain after $T$ rounds.
     \begin{itemize}
         \item Linear: $\gamma_T = \BigO{d \log T}$\vspace{-0.5ex} 
         \item Gaussian: $\gamma_T = \BigO{(\log T)^{d+1}}$\vspace{-1ex}

@@ -1,4 +1,4 @@
-\vspace{0.5mm}\hrule\vspace{0.5mm}
+\vspace{0.2mm}\hrule\vspace{0.2mm}
 \section{Active Learning}
 
 \begin{framed}
@@ -6,7 +6,7 @@
         &\H{\rX \mid \rY} \defeq \E[\vy \sim p(\vy)]{\H{\rX \mid \rY = \vy}} \\[-1ex]
         &= \E[(\vx, \vy) \sim p(\vx, \vy)]{- \log p(\vx \mid \vy)}
     \end{aligned}$
-    \vspace{0.5mm}\hrule\vspace{0.5mm}
+    \vspace{0.2mm}\hrule\vspace{0.2mm}
     \textbf{Joint entropy}: $\H{\rX, \rY} \defeq \E[(\vx, \vy) \sim p(\vx, \vy)]{- \log p(\vx, \vy)}$ 
     \begin{itemize}
         \item $\text H[\rX \mid \rY] \ne \text H[\rY \mid \rX]$ in general; but $\text H[\rX, \rY] = \text H[\rY, \rX]$
@@ -15,7 +15,7 @@
         \item $\H{\rX \mid \rY} \leq \H{\rX}$ (Gibbs; Information never hurts)\\
         $\Leftrightarrow 0 \le \H{\rX} - \H{\rX \mid \rY} = \I{\rX}{\rY}$
     \end{itemize}
-    \vspace{0.5mm}\hrule\vspace{0.5mm}
+    \vspace{0.2mm}\hrule\vspace{0.2mm}
     \textbf{Mutual info}: $\I{\rX}{\rY} \defeq \H{\rX} + \H{\rY} - \H{\rX, \rY}$
     \begin{itemize}
         \item $\I{\rX}{\rY} = \I{\rY}{\rX} = \E[\vy \sim p]{\KL{p(\vx \mid \vy)}{p(\vx)}}$
@@ -45,7 +45,7 @@
 \end{framed}
 
 \begin{itemize}
-    \item \textbf{Greedy}: Pick the locations $\vx_1$ through $\vx_n$ individually by greedily finding the location with the maximal MI, this provides a $(1 - \nicefrac{1}{e})$-approximation of the optimum. 
+    \item \textbf{Greedy}: Pick $\vx_1$ through $\vx_n$ individually by greedily finding the location with the maximal MI, this provides a $(1 - \nicefrac{1}{e})$-approximation of the optimum. 
     \item \textbf{Uncertainty sampling}: Have already picked $\sS_t = \{\vx_1, \dots, \vx_t\}$; Solve the following: \scalebox{0.9}{$\vx_{t+1} \defeq \argmax_{\vx \in \spX} \Delta_I(\vx \mid \sS_t) = \argmax_{\vx \in \spX} \Ism{f_\vx}{y_{\vx} \mid \vy_{\sS_t}}$}. Doesn't work with heteroscedastic noise: large aleatoric uc may dominate epistemic uc. In classification corresponds to selecting label that max. entropy of predicted label: $\vx_{t+1} \defeq \argmax_{\vx \in \spX} \H{y_{\vx} \mid \vx_{1:t}, y_{1:t}}$. 
 \end{itemize}
 
