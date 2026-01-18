@@ -1,11 +1,13 @@
 \vspace{0.2mm}\hrule\vspace{0.2mm}
 \section{Model-free Reinforcement Learning}
 
-In tab. methods: Storing val. fn., need at least $O(|\mathcal X|)$ space. Storing Q-fn, even need $O(|\mathcal X| \cdot |\mathcal A|)$ space.\\
-Time req. to compute value fn. for every state-action pair exactly grows poly. in size of state-action space.\\
-Can view TD-/Q-learning as SGD on the squared loss:\\[-0.5ex]
-$\ell(\vtheta; x, r, x') \defeq \frac{1}{2}\parentheses{r + \gamma \old{\vtheta}(x') - \vtheta(x)}^2$ 
-and learn param. approx. of $\V{\vx; \vtheta}$ or $\Q{\vx}{\va; \vtheta}$ using Monte Carlo est. and bootstrapping.
+\vspace{-2pt}
+\begin{itemize}
+    \item Time req. to compute value fn. for every state-action pair exactly grows poly. in size of state-action space.\\
+    \item Can view TD-/Q-learning as SGD on the squared loss:\\[-0.5ex]
+    $\ell(\vtheta; x, r, x') \defeq \frac{1}{2}\parentheses{r + \gamma \old{\vtheta}(x') - \vtheta(x)}^2$ 
+    and learn param. approx. of $\V{\vx; \vtheta}$ or $\Q{\vx}{\va; \vtheta}$ using Monte Carlo est. and bootstrapping. 
+\end{itemize}
 
 \columnbreak
 
@@ -88,25 +90,57 @@ Model-free (TD-/Q-learn.) are usually \textbf{sample ineff.}:
   };
 \end{tikzpicture}
 
-\vspace{-1.7cm}
+\vspace{-1.5cm}
 \begin{list}{}{
     \leftmargin=3cm
     \rightmargin=0cm
+    \itemsep=1pt % Space between different items
+    \parsep=1pt  % Space between paragraphs/wrapped lines within an item
+    \topsep=0pt   % Space above the list
+    \partopsep=0pt
 }
     \item \scalebox{0.7}{\textbullet} Use SARSA for learning critic; SGD for gradient est.
     \item \scalebox{0.7}{\textbullet} Actor is not guaranteed to improve
 \end{list}
+\vspace{1pt}
+\begin{list}{}{
+    \leftmargin=2.2cm
+    \rightmargin=0cm
+    \itemsep=1pt % Space between different items
+    \parsep=1pt  % Space between paragraphs/wrapped lines within an item
+    \topsep=0pt   % Space above the list
+    \partopsep=0pt
+}
+    \item \scalebox{0.7}{\textbullet} Typically rely on randomization in policy to encourage exploration
+\end{list}
+\vspace{-1pt}
+\begin{list}{}{
+    \leftmargin=0cm
+    \rightmargin=0cm
+    \itemsep=1pt % Space between different items
+    \parsep=1pt  % Space between paragraphs/wrapped lines within an item
+    \topsep=0pt   % Space above the list
+    \partopsep=0pt
+}
+    \item \scalebox{0.7}{\textbullet} Typically low sample efficiency (improve. w. TRPO)
+\end{list}
+
+Reduce var. of the grad estimates version with \textbf{A2C}:\vspace{-2pt}
+\includegraphics[width=0.7\linewidth,trim={0.5cm 0.3cm 0cm 0.3cm},clip]{images/A2C.png}
+\hspace{-0.7cm}w. Bootstrap est. $\va^{\pi_\vvarphi}$
 
 \hrule\vspace{0.2mm}
 
-{\hyphenpenalty=0 \exhyphenpenalty=0
-\scalebox{0.7}{\textbullet}~\textbf{TRPO:} KL-constraint forces monotonic improvement via trust regions \hl{(on-pol., m-free, pol.-gradient)}
-\scalebox{0.7}{\textbullet}~\textbf{PPO:} Clipped obj. stabilizes training by limiting update size \hl{(on-pol., m-free, AC)}
-\scalebox{0.7}{\textbullet}~\textbf{GRPO:} Group-relative advantages remove need for separate critic \hl{(on-pol., m-free, critic-less)}
-\scalebox{0.7}{\textbullet} \textbf{DDPG:} Det. grads. enable cont. control with target networks \hl{(off-pol., m-free, AC)}
-\scalebox{0.7}{\textbullet}~\textbf{SAC:} Max. entropy obj. balances exploration and performance \hl{(off-pol., m-free)}
-\scalebox{0.7}{\textbullet}~\textbf{DPO:} Bypasses explicit reward modeling \hl{(offline, m-free, ref.-based)}
-\scalebox{0.7}{\textbullet}~\textbf{PETS:} Ensembles plus MPC handle uncertainty in planning. \hl{(m-based)}
-\scalebox{0.7}{\textbullet}~\textbf{UCRL:} selects optimistic MDPs for efficient exploration \hl{(m-based, exploration, o.i.t.f.o.uc)}
-\scalebox{0.7}{\textbullet}~\textbf{H-UCRL:} hallucinated transitions ensure safe, robust exploration. \hl{(m-based, opt. o.i.t.f.o.uc, hierarchical)}
+{\setlength{\baselineskip}{6.8pt}
+ \setlength{\lineskiplimit}{-12pt}
+ \hyphenpenalty=0 \exhyphenpenalty=0
+    \scalebox{0.7}{\textbullet}~\textbf{TRPO:} KL-constraint forces monotonic improvement via trust regions \hl{(on-pol., m-free, pol.-gradient)}
+    \scalebox{0.7}{\textbullet}~\textbf{PPO:} Clipped obj. stabilizes training by limiting update size \hl{(on-pol., m-free, AC)}
+    \scalebox{0.7}{\textbullet}~\textbf{GRPO:} Group-relative advantages remove need for separate critic \hl{(on-pol., m-free, critic-less)}
+    \scalebox{0.7}{\textbullet} \textbf{DDPG:} Det. grads. enable cont. control with target networks, inject Gaussian noise “dithering” \hl{(off-pol., m-free, AC)}
+    \scalebox{0.7}{\textbullet}~\textbf{SAC:} Max. entropy obj. balances exploration and performance \hl{(off-pol., m-free)}
+    \scalebox{0.7}{\textbullet}~\textbf{DPO:} No explicit reward modeling \hl{(offline, m-free, ref.-based)}
+    \scalebox{0.7}{\textbullet}~\textbf{PETS:} Ensembles plus MPC handle uc. in planning. \hl{(m-based)}
+    \scalebox{0.7}{\textbullet}~\textbf{UCRL:} selects optimistic MDPs for efficient exploration \hl{(m-based, exploration, o.i.t.f.o.uc)}
+    \scalebox{0.7}{\textbullet}~\textbf{H-UCRL:} hallucinated transitions ensure safe, robust exploration. \hl{(m-based, opt. o.i.t.f.o.uc, hierarchical)}
 \par}

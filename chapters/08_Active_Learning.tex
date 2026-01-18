@@ -46,7 +46,8 @@
 
 \begin{itemize}
     \item \textbf{Greedy}: Pick $\vx_1$ through $\vx_n$ individually by greedily finding the location with the maximal MI, this provides a $(1 - \nicefrac{1}{e})$-approximation of the optimum. 
-    \item \textbf{Uncertainty sampling}: Have already picked $\sS_t = \{\vx_1, \dots, \vx_t\}$; Solve the following: \scalebox{0.9}{$\vx_{t+1} \defeq \argmax_{\vx \in \spX} \Delta_I(\vx \mid \sS_t) = \argmax_{\vx \in \spX} \Ism{f_\vx}{y_{\vx} \mid \vy_{\sS_t}}$}. Doesn't work with heteroscedastic noise: large aleatoric uc may dominate epistemic uc. In classification corresponds to selecting label that max. entropy of predicted label: $\vx_{t+1} \defeq \argmax_{\vx \in \spX} \H{y_{\vx} \mid \vx_{1:t}, y_{1:t}}$. 
+    \item \textbf{Uncertainty sampling}: Have already picked $\sS_t = \{\vx_1, \dots, \vx_t\}$; Solve the following: \scalebox{0.9}{$\vx_{t+1} \defeq \argmax_{\vx \in \spX} \Delta_I(\vx \mid \sS_t) = \argmax_{\vx \in \spX} \Ism{f_\vx}{y_{\vx} \mid \vy_{\sS_t}}$}. Doesn't work with heteroscedastic noise: large aleatoric uc may dominate epistemic uc. In classification corresponds to selecting label that max. entropy of\\[-0.5ex]
+    predicted label: $\vx_{t+1} \defeq \argmax_{\vx \in \spX} \H{y_{\vx} \mid \vx_{1:t}, y_{1:t}}$. 
 \end{itemize}
 
 \begin{framed}
@@ -55,6 +56,6 @@
 \end{framed}
 
 \begin{itemize}
-    \item \textbf{Inductive learning} extract general rules from data. Typically, we can directly observe $f(\vx)$ at any $\vx$.
-    \item \textbf{Transductive learning} make best pred. at particular $\vxs$. Typically, cannot directly observe $f(\vxs)$. Require gen. $f(\vs)$ from the behavior of $f$ at other locations.
+    \item \textbf{Inductive learn.} extract general rules from data. Typically, we can directly observe $f(\vx)$ at any $\vx$.
+    \item \textbf{Transductive learn.} cannot directly observe target $f(\vxs)$. Requires generalization from other locations.
 \end{itemize}

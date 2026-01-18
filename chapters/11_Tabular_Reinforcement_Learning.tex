@@ -10,15 +10,16 @@
 %     \item \textbf{Model-free} Learn the value function directly.
 % \end{itemize}
 
+\vspace{-3pt}
 Markovian property of the underlying MDP: \scalebox{0.8}{$X_{t=1} \bot X_{t'+1} \mid X_t, X_{t'+1},A_t,A_{t'}$}\hfill \scalebox{0.8}{$R_t \bot X_{t'} \mid R_t, X_{t'+1},A_t,A_{t'}$}
-
-\begin{framed}
-    \textbf{Bootstrapping:} approx. a true quantity by using an empirical quantity, which itself is constructed using samples from the true quantity that is to be approx. 
-\end{framed}
 
 \begin{framed}
     \textbf{Robbins-Montro (RM) conditions}: for a sequence\\[-0.5ex]
     $(\alpha)_{t \in \mathbb N_0}$ if: $\alpha_t \geq 0$, $\sum_{t=0}^{\infty}{\alpha_t} = \infty$, $\sum_{t=0}^{\infty}{\alpha_t^2} < \infty$.
+\end{framed}
+
+\begin{framed}
+    \textbf{Bootstrapping:} approx. a true quantity by using an empirical quantity, which itself is constructed using samples from the true quantity that is to be approx. 
 \end{framed}
 
 \begin{framed}
@@ -99,9 +100,10 @@ Same convergence guarantees as TD.
 
 \begin{itemize}
     \item If $\alpha_t$ satisfies RM cond. and all state-action pair are visited inf. often, then $Q^\star$ conv. to $q^\star$ with prob. 1.
-    \item With prob. at least $1 - \delta$, conv. to $\epsilon$-optimal policy in num. steps poly. in $\log |X|$, $\log |A|$, $\frac 1 \epsilon$ and $\log \frac1\delta$.
+    \item With prob. at least $1 - \delta$, conv. to $\epsilon$-optimal policy in num. steps poly. in $\log |X|$, $\log |A|$, $\sfrac 1 \epsilon$ and $\log \sfrac1\delta$.
 \end{itemize}
 
 \vspace{0.2mm}\hrule\vspace{0.2mm}
 
-\textbf{Optimistic Q-learning:} Similar to $R_\text{max}$ Init. \scalebox{1}{$Q^\star(x, a) = V_\text{max} \prod_{t=1}^{T_\text{init}} (1 - \alpha_t)^{-1}$} w. \scalebox{1}{$V_\text{max} \defeq \frac{R_\text{max}}{1 - \gamma} \ge \max q^\star(x, a)$}. With prob. at least $1 - \delta$,\\[-0.8ex] $\epsilon$-optimal $\pi$ after num. steps poly. in $|X|$, $|A|$, $\frac1\epsilon$, $\log \frac1\delta$, and $R_\text{max}$ where $T_\text{init}$ is upper bounded by a poly. in same coeff. If $T_\text{init}$ large enough, conv. quickly to $\pi^\star$.
+\textbf{Optimistic Q-learning:} Similar to $R_\text{max}$ Init. \scalebox{1}{$Q^\star(x, a) = V_\text{max} \prod_{t=1}^{T_\text{init}} (1 - \alpha_t)^{-1}$} w.\\[-0.5ex] \scalebox{1}{$V_\text{max} \defeq \frac{R_\text{max}}{1 - \gamma} \ge \max q^\star(x, a)$}. With prob. at least $1 - \delta$,\\[-0.8ex] $\epsilon$-optimal $\pi$ after num. steps poly. in $|X|$, $|A|$, $\frac1\epsilon$, $\log \frac1\delta$,\\[-0.5ex]
+and $R_\text{max}$ where $T_\text{init}$ is upper bounded by a poly. in same coeff. If $T_\text{init}$ large enough, conv. quickly to $\pi^\star$.

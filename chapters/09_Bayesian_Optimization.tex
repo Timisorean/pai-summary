@@ -1,8 +1,10 @@
 \vspace{0.2mm}\hrule\vspace{0.2mm}
 \section{Bayesian Optimization}
 
+\vspace{-4pt}
 \begin{framed}
-    \textbf{Cumulative regret} associated with choices $\{\vx_t\}_{t=1}^T$ is: $R_T \defeq \sum_{t=1}^T \underbrace{({\max_\vx \opt{f}(\vx) - \opt{f}(\vx_t)})}_{\text{\textit{instantaneous regret}}}$.
+    \textbf{Cum. regret}: $R_T \defeq \sum_{t=1}^T ({\max_\vx \opt{f}(\vx) - \opt{f}(\vx_t)})$\\
+    \textbf{Instant regret}: $({\max_\vx \opt{f}(\vx) - \opt{f}(\vx_t)})$
 \end{framed}
 
 Goal: Achieve \textbf{sublinear regret}: $\lim_{T\to\infty} \sfrac{R_T}{T} = 0$ (requires balancing exploration and exploitation).
@@ -12,11 +14,15 @@ Goal: Achieve \textbf{sublinear regret}: $\lim_{T\to\infty} \sfrac{R_T}{T} = 0$ 
 
 \begin{itemize}
     \item Common to use an \textbf{acquisition fn.} to greedily pick the next point to sample based on the current model.
-    \item \textbf{Upper confidence bound (UCB)}: $\vx_{t+1} \defeq \argmax_{\vx \in \spX} \mu_{t}(\vx) + \beta_{t+1} \sigma_{t}(\vx)$, where $\sigma_t(\vx) \defeq \sqrt{k_t(\vx, \vx)}$. If $\beta_t = 0$ then UCB is purely exploitative; if $\beta_t \to \infty$, UCB recovers uc sampling. UCB fn. generally non-convex.
+    \item \textbf{UCB}: $\vx_{t+1} \defeq \argmax_{\vx \in \spX} \mu_{t}(\vx) + \beta_{t+1} \sigma_{t}(\vx)$, where\\[-0.5ex]
+    $\sigma_t(\vx) \defeq \sqrt{k_t(\vx, \vx)}$. Generally non-convex. If $\beta_t = 0$: purely exploitative; if $\beta_t \to \infty$: recovers uc sampling. UCB curves must pass through datapoints since $\sigma = 0$.
+    \item \textbf{PI}: likelihood that $\vx$ will improve current best by at least $\xi$. Comp. efficient. Can be overly "greedy" by taking pts. with high prob. of small improvement.
+    \item \textbf{EI}: exp. of improvement $\mathrm{I}(x)=\max(0,f(\vx)-f(\vxs))$ over current best $f(\vxs)$. Closed-form solution for GPs. Balances pts. with high pred. value and those with high uc. Problem: Vanishing gradients (use log to help).
 \end{itemize}
 
 \begin{framed}
-    When choosing $\beta_t$ appropriately: \scalebox{0.8}{$R_T = \BigO{\sqrt{T \gamma_T}}$}, with \scalebox{0.9}{$\gamma_T \defeq \max_{\substack{\sS \subseteq \spX \\ \card{\sS} = T}} \I{\vf_\sS}{\vy_\sS} = \max_{\substack{\sS \subseteq \spX \\ |\sS| = T}} \frac{1}{2} \log\det{\mI + \sigman^{-2} \mK_{\sS\sS}}$}, is the maximum information gain after $T$ rounds.
+    When choosing $\beta_t$ appropriately: \scalebox{0.8}{$R_T = \BigO{\sqrt{T \gamma_T}}$}, with \scalebox{0.9}{$\gamma_T \defeq \max_{\substack{\sS \subseteq \spX \\ \card{\sS} = T}} \I{\vf_\sS}{\vy_\sS} = \max_{\substack{\sS \subseteq \spX \\ |\sS| = T}} \frac{1}{2} \log\det{\mI + \sigman^{-2} \mK_{\sS\sS}}$},\\[-0.5ex]
+    is the maximum information gain after $T$ rounds.
     \begin{itemize}
         \item Linear: $\gamma_T = \BigO{d \log T}$\vspace{-0.5ex} 
         \item Gaussian: $\gamma_T = \BigO{(\log T)^{d+1}}$\vspace{-1ex}
@@ -24,5 +30,6 @@ Goal: Achieve \textbf{sublinear regret}: $\lim_{T\to\infty} \sfrac{R_T}{T} = 0$ 
     \end{itemize}
 \end{framed}
 
-\textbf{Thompson Sampling}: At time $t+1$, we sample a fn. $\Tilde{f}_{t+1} \sim p(\cdot \mid \vx_{1:t}, y_{1:t})$ from our posterior distr.
-Then, we simply max. $\Tilde{f}_{t+1}$, $\vx_{t+1} \defeq \argmax_{\vx \in \spX} \Tilde{f}_{t+1}(\vx)$.
+\textbf{Thompson Sampling}: At time $t+1$, we sample a fn.\\[-0.5ex]
+$\Tilde{f}_{t+1} \sim p(\cdot \mid \vx_{1:t}, y_{1:t})$ from our posterior distr. Then, we\\[-0.5ex]
+simply max. $\Tilde{f}_{t+1}$, $\vx_{t+1} \defeq \argmax_{\vx \in \spX} \Tilde{f}_{t+1}(\vx)$.

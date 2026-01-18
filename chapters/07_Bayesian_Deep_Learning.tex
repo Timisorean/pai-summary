@@ -37,7 +37,8 @@ For linear regression, min. MSE/CE \textbf{corresponds to MLE} under a Gaussian 
 \vspace{0.2mm}\hrule\vspace{0.2mm}
 
 \begin{itemize}
-    \item BNN learning and inference are \textbf{generally intractable} when the noise is not assumed to be homoscedastic and known. Thus, we need approx. inference.
+    \item BNN learning and inference are \textbf{generally intractable}\\[-0.5ex]
+    when the noise is not assumed to be homoscedastic and known. Thus, we need approx. inference.\vspace{-2pt}
     \item Goal: approx. true posterior $p(\vtheta \mid \spD)$ with simpler var-\\iational distr. $q_\vlambda$ typically family of indep. Gaussians.
     \item Achieved by max. ELBO with SGD and rep. trick.
     \item We can approx. the predictive distr. by sampling from the variational posterior $p(\ys \mid \vxs, \vx_{1:n}, \vy_{1:n}) \approx \E[\theta \sim q_\vlambda]{p(\ys \mid \vxs, \vtheta)}\approx \frac{1}{m} \sum_{i=1}^m p(\ys \mid \vxs, \vtheta^{(i)})$.

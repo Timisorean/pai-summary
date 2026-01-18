@@ -11,10 +11,10 @@
 %     A \textbf{policy} maps each state $x \in \sX$ to a prob. distr. over actions. For any $t > 0$: $\pi(a \mid x) \defeq \Pr{A_t = a \mid X_t = x}$.
 % \end{framed}
 
-\begin{itemize}
-    \item A policy induces a MC $(X_t^\pi)_{t\in\Nat_0}$: $p^\pi(x' \mid x) \defeq \Pr{X_{t+1}^\pi = x' \mid X_t^\pi = x} = \sum_{a \in \sA} \pi(a \mid x) p(x' \mid x, a)$.
-    \item The \textbf{discounted payoff} from time $t$ is: $G_t \defeq \sum_{m=0}^\infty \gamma^m R_{t+m}$, for $\gamma \in [0, 1)$.
-\end{itemize}
+\vspace*{-2pt}
+\begin{framed}
+    \item \textbf{Discounted payoff}: $G_t \defeq \sum_{m=0}^\infty \gamma^m R_{t+m}$
+\end{framed}
 
 \begin{framed}
     \begin{itemize}
@@ -24,7 +24,8 @@
 \end{framed}
 
 \begin{framed}
-    \textbf{Bellman Expectation Equation}: 
+    \textbf{Bellman Expectation Equation}:
+    \vspace{-2pt}
     \begin{itemize}
         \item $\v[\pi]{x} = r(x, \pi(x)) + \gamma \E[x' \mid x, \pi(x)]{\v[\pi]{x'}}$
         \item If stochastic policy: $\v[\pi]{x} = \E[a \sim \pi(x)]{\q[\pi]{x}{a}}$\\
@@ -33,8 +34,7 @@
     \end{itemize}
 \end{framed}
 
-Can be used to find $\fnv[\pi]$ given policy $\pi$, by solving linear system of eq. in cubic time in size of state space. Can also be solved using fixed pt. iter: $\mB^\pi \vv \defeq \vr^\pi + \gamma \mP^\pi \vv$.
-
+Can be used to find $\fnv[\pi]$ given policy $\pi$, by solving linear system of eq. in cubic time in size of state space. Can also be solved using fixed pt. iter: $\mB^\pi \vv \defeq \vr^\pi + \gamma \mP^\pi \vv$.\\
 \scalebox{0.7}{$\norm{\vv_t^\pi - \vv^\pi}_\infty = \norm{\mB^\pi \vv_{t-1}^\pi - \mB^\pi \vv^\pi}_\infty \le \gamma \norm{\vv_{t-1}^\pi - \vv^\pi}_\infty \le \gamma \norm{\vv_0^\pi - \vv^\pi}_\infty$}
 
 % \begin{framed}
@@ -47,6 +47,15 @@ Can be used to find $\fnv[\pi]$ given policy $\pi$, by solving linear system of 
 \begin{framed}
     \textbf{Bellman's theorem}: A policy $\pis$ is optimal iff it's greedy w.r.t its own value fn. In other words, $\pis$ is optimal iff $\pis(x)$ is a distr. over set $\argmax_{a \in \sA} \q*{x}{a}$.
 \end{framed}
+
+Optimal $v^\star$ and $q^\star$ are fixed-pt. of Bellman update.
+
+\begin{framed}
+    \textbf{Bellman optimality equations:}\\
+    $\v*{x} = \max_{a \in A} r(x,a) + \gamma \E[x' \mid x,a]{\v*{x'}}$\\[-0.5ex]
+    $\q*{x}{a} = r(x,a) + \gamma \E[x' \mid x,a]{\max_{a \in A} \q*{x'}{a'}}$
+\end{framed}
+
 
 \noindent
 \begin{tabular}{@{}p{0.55\columnwidth}@{\extracolsep{\fill}}p{0.45\columnwidth}@{}}
@@ -63,7 +72,7 @@ Can be used to find $\fnv[\pi]$ given policy $\pi$, by solving linear system of 
 Monotonic improvement of PI:
 \begin{itemize}
     \item \scalebox{0.85}{$v^{\pi_{t+1}}(x) \ge v^{\pi_{t}}(x)$} for all $x \in X$
-    \item \scalebox{0.85}{$v^{\pi_{t+1}}(x) >v^{\pi_{t}}(x)$} for at least one $x \in X$, unless \scalebox{0.85}{$v^{\pi_t} \equiv v^\star$}
+    \item \scalebox{0.85}{$v^{\pi_{t+1}}(x) >v^{\pi_{t}}(x)$} for at least one $x \in X$, unless \scalebox{0.8}{$v^{\pi_t} \equiv v^\star$}
 \end{itemize}
 
 \vspace{0.2mm}\hrule\vspace{0.2mm}
@@ -73,6 +82,7 @@ Monotonic improvement of PI:
 \begin{itemize}
     \item VI converges to an optimal policy, as $\fnv[\star]$ and $\fnq[\star]$ are a fixed-points of the Bellman update $\mBs$.
     \item For any $\epsilon > 0$, VI converges to an $\epsilon$-optimal solution in poly time. However, unlike PI, VI does not generally reach the exact optimum in a finite num. of iter.
+    \item VI can be viewed from dynamic prog. perspective
 \end{itemize}
 
 \begin{framed}

@@ -1,23 +1,36 @@
 \vspace{0.2mm}\hrule\vspace{0.2mm}
 \section{Variational Inference}
 
-Idea: approximate true posterior distribution with a simpler posterior that is easy to sample: \\$p(\vtheta \mid \vx_{1:n}, y_{1:n}) = \frac{1}{Z} p(\vtheta, y_{1:n} \mid \vx_{1:n}) \approx q(\vtheta \mid \vlambda) \eqdef q_\vlambda(\vtheta)$, where $\vlambda$ are params. of the \textbf{variational posterior} $q_\vlambda$.\\
+\vspace{-3.5pt}
+Idea: approximate true posterior distribution with a\\[-0.6ex]
+simpler posterior that is easy to sample:\\[-0.8ex]
+$p(\vtheta \mid \vx_{1:n}, y_{1:n}) = \frac{1}{Z} p(\vtheta, y_{1:n} \mid \vx_{1:n}) \approx q(\vtheta \mid \vlambda) \eqdef q_\vlambda(\vtheta)$, where $\vlambda$ are params. of the \textbf{variational posterior} $q_\vlambda$.
 
 \vspace{0.2mm}\hrule\vspace{0.2mm}
 
-\textbf{Laplace approx.}: find a Gaussian approx. (i.e. second-order Taylor) of the posterior around its mode:
-$q(\vtheta) \defeq \N[\vtheta]{\vthetahat}{\inv{\mLambda}} \propto \exp(\hat{\psi}(\vtheta))$, with $\vthetahat$ the mode (i.e. MAP estimate) and with $\hes$ the Hessian: $\mLambda \defeq - \hes_\psi(\vthetahat) = - \hes_\vtheta \log p(\vtheta \mid \vx_{1:n}, y_{1:n}) \bigl|_{\vtheta = \vthetahat}$. \\
+\textbf{Laplace approx.}: find Gaussian approx. (2nd-order\\[-0.5ex]
+Taylor) of posterior:
+$q(\vtheta) \defeq \N[\vtheta]{\vthetahat}{\inv{\mLambda}} \propto \exp(\hat{\psi}(\vtheta))$,\\[-0.5ex]
+with $\vthetahat$ the mode (i.e. MAP estimate) and with $\hes$ the\\[-0.5ex]
+Hessian: $\mLambda \defeq - \hes_\psi(\vthetahat) = - \hes_\vtheta \log p(\vtheta \mid \vx_{1:n}, y_{1:n}) \bigl|_{\vtheta = \vthetahat}$. \\[-0.5ex]
 Perform inference using the variations approximation: \scalebox{0.9}{$\begin{aligned}[t]
     p(\ys \mid \vxs, \vx_{1:n}, y_{1:n}) &\approx \smallint p(\ys \mid \vxs, \vtheta) q_\vlambda(\vtheta) \,d\vtheta \\[-1ex]
     &= \E[\vtheta \sim q_\vlambda]{p(\ys \mid \vxs, \vtheta)}
 \end{aligned}$}
 
-% \columnbreak
-
+\vspace{-2pt}
 \begin{itemize}
     \item Matches shape of true posterior around its mode but may not represent it accurately elsewhere.
     \item Leads to extremely overconfident predictions, often unsuitable for approximate probabilistic inference.
     \item Preserves MAP point estimate as its mean.
+    \item Laplace approximation of a Gaussian is exact.\vspace{-2pt}
+    \item \textbf{For log. BLR:} $\mathbf{\Lambda} = \mathbf{X}^\top \text{diag} \{ \pi_i (1 - \pi_i) \} \mathbf{X} + \sigma_{\text{p}}^{-2} \mathbf{I}$\\[-0.5ex]
+    (indep. of norm.const.) $p(\ys \mid \vxs, \vx_{1:n}, y_{1:n})$\\[-0.5ex]
+    \scalebox{0.9}{
+    $\begin{aligned}
+    &\approx \smallint \sigma(\ys \transpose\vw \vx) \mathcal{N}(\vw; \hat\vw, \Lambda^{-1}) \,d \vw \\[-1.2ex]
+    &= \smallint \sigma(\ys f) \mathcal{N}(f; \hat{\mathbf{w}}^T \mathbf{x}^*, \mathbf{x}^{*T} \Lambda^{-1} \mathbf{x}^*) \,d f
+    \end{aligned}$}
 \end{itemize}
 
 \begin{framed}
@@ -30,8 +43,7 @@ Perform inference using the variations approximation: \scalebox{0.9}{$\begin{ali
      $\S{u}$ is convex in $u$. For a discrete RV $X$: $\text S[p(x)] \ge 0$.\\
     Axiomatic characterization up to pos. const. factor:
     \begin{itemize}
-        \item $\S{u} > \S{v} \implies u < v$ (anti-monotonicity)
-        \item $S$ continuous
+        \item $\S{u} > \S{v} \implies u < v$ (anti-monoton) \scalebox{0.7}{\textbullet} $S$ continuous
         \item $\S{uv} = \S{u} + \S{v}$ for independent events
     \end{itemize}
 \end{framed}

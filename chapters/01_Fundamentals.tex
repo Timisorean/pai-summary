@@ -1,5 +1,12 @@
 \section{Fundamentals}
 
+\vspace{-4pt}
+\begin{tikzpicture}[baseline, overlay]
+  \node[anchor=west, font=\fontsize{6pt}{6pt}\selectfont, anchor=base, xshift=4cm, yshift=0.18cm, fill=white!10] at (0, 0) {
+    $\frac{d}{dx} \left[ \frac{f(x)}{g(x)} \right] = \frac{g(x)f'(x) - f(x)g'(x)}{(g(x))^2}$
+  };
+\end{tikzpicture}
+
 \begin{framed}
     \begin{itemize}
         \item \textbf{Normal}:
@@ -70,8 +77,9 @@
 
 \begin{itemize}
     \item If prior $p(\vx)$ and posterior $p(\vx \mid \vy)$ from same fam. of distr., prior is \textbf{conjugate prior} to likelihood $p(\vy \mid \vx)$.
-    \item Beta distr. is a conjugate prior to binomial likelihood.
-    \item Under some conditions, \textbf{Gaussian is self-conjugate} (Gaussian prior and likelihood $\rightarrow$ posterior Gaussian).
+    % \item Beta distr. is a conjugate prior to binomial likelihood.
+    \item Under some conditions, \textbf{Gaussian is self-conjugate} (Gaussian prior and likelihood $\rightarrow$ posterior Gaussian). 
+    \item Gaussians with known var. are self-conjugate to any Gaussian likelihood.
 \end{itemize}
 
 \vspace{0.2mm}\hrule\vspace{0.2mm}
